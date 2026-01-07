@@ -1,0 +1,134 @@
+// PCGS Database Schema - SQLite with Prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User account for authentication
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  name          String?
+  avatarUrl     String?
+  settings      String    @default("{\"llm_provider\": \"anthropic\", \"notifications_enabled\": true}")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  problems      Problem[]
+  boardRoles    BoardRole[]
+  boardSessions BoardSession[]
+  reports       QuarterlyReport[]
+}
+
+// Problem Portfolio
+model Problem {
+  id                      String   @id @default(cuid())
+  userId                  String
+  name                    String
+  whatBreaks              String
+  scarcitySignals         String   @default("[]")
+  aiCheaper               String?
+  errorCost               String?
+  trustRequired           String?
+  classification          String
+  classificationReasoning String?
+  timeAllocation          Int?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  boardRoles BoardRole[]
+
+  @@index([userId])
+}
+
+// Board Roles
+model BoardRole {
+  id                String   @id @default(cuid())
+  userId            String
+  roleType          String
+  anchoredProblemId String?
+  focusArea         String
+  systemPrompt      String?
+  generatedAt       DateTime @default(now())
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  anchoredProblem Problem? @relation(fields: [anchoredProblemId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+}
+
+// Board Sessions
+model BoardSession {
+  id           String    @id @default(cuid())
+  userId       String
+  sessionType  String
+  quarter      String?
+  status       String    @default("in_progress")
+  currentPhase Int       @default(1)
+  startedAt    DateTime  @default(now())
+  completedAt  DateTime?
+
+  user     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages SessionMessage[]
+  report   QuarterlyReport?
+
+  @@index([userId])
+  @@index([status])
+}
+
+// Session Messages
+model SessionMessage {
+  id          String   @id @default(cuid())
+  sessionId   String
+  speaker     String
+  content     String
+  messageType String
+  metadata    String?
+  createdAt   DateTime @default(now())
+
+  session BoardSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+}
+
+// Quarterly Reports
+model QuarterlyReport {
+  id        String @id @default(cuid())
+  sessionId String @unique
+  userId    String
+  quarter   String
+
+  lastBet         String?
+  lastBetWrongIf  String?
+  lastBetResult   String?
+  lastBetEvidence String?
+  commitments     String?
+
+  avoidedDecision     String
+  avoidedDecisionWhy  String
+  avoidedDecisionCost String
+  comfortWork         String
+  comfortWorkAvoided  String
+
+  nextBet        String
+  nextBetWrongIf String
+
+  overallAssessment String?
+  concerns          String?
+  actionItems       String?
+
+  createdAt DateTime @default(now())
+
+  session BoardSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user    User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
