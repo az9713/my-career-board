@@ -1,12 +1,12 @@
-# PCGS - Personal Career Governance System
+# my-career-board - Personal Career Governance System
 
 Your AI-powered personal board of directors for career accountability.
 
 ---
 
-## What is PCGS?
+## What is my-career-board?
 
-PCGS treats your career like a company - with you as the CEO reporting to a board of AI directors. These directors conduct regular audits and quarterly reviews to keep you honest about:
+my-career-board treats your career like a company - with you as the CEO reporting to a board of AI directors. These directors conduct regular audits and quarterly reviews to keep you honest about:
 
 - What you're avoiding
 - What commitments you've broken

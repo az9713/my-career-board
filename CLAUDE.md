@@ -1,10 +1,10 @@
-# CLAUDE.md - AI Assistant Context for PCGS
+# CLAUDE.md - AI Assistant Context for my-career-board
 
-This file provides context for Claude Code and other AI assistants working on the PCGS (Personal Career Governance System) codebase.
+This file provides context for Claude Code and other AI assistants working on the my-career-board (Personal Career Governance System) codebase.
 
 ## Project Overview
 
-PCGS is a Next.js web application that provides AI-powered career accountability through a "personal board of directors" concept. Users define career problems they're solving, and AI directors (powered by Anthropic's Claude) conduct quarterly reviews and audits to keep users accountable.
+my-career-board is a Next.js web application that provides AI-powered career accountability through a "personal board of directors" concept. Users define career problems they're solving, and AI directors (powered by Anthropic's Claude) conduct quarterly reviews and audits to keep users accountable.
 
 **Inspired by:** Nate Jones' "AI Board of Directors" concept:
 - YouTube: ["Most People Want Validation, Not Perspective"](https://www.youtube.com/watch?v=BaC5FEN2e4Y)

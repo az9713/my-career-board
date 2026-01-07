@@ -1,14 +1,14 @@
-# PCGS User Guide
+# my-career-board User Guide
 
 ## Your Personal Career Governance System
 
-Welcome to PCGS - your AI-powered career accountability partner. This guide will help you get the most out of the application.
+Welcome to my-career-board - your AI-powered career accountability partner. This guide will help you get the most out of the application.
 
 ---
 
 ## Table of Contents
 
-1. [What is PCGS?](#what-is-pcgs)
+1. [What is my-career-board?](#what-is-pcgs)
 2. [Getting Started](#getting-started)
 3. [Understanding Your Dashboard](#understanding-your-dashboard)
 4. [Setting Up Your Problem Portfolio](#setting-up-your-problem-portfolio)
@@ -21,9 +21,9 @@ Welcome to PCGS - your AI-powered career accountability partner. This guide will
 
 ---
 
-## What is PCGS?
+## What is my-career-board?
 
-PCGS (Personal Career Governance System) treats your career like a company - with you as the CEO reporting to a board of directors.
+my-career-board (Personal Career Governance System) treats your career like a company - with you as the CEO reporting to a board of directors.
 
 > **Inspired by Nate Jones:**
 > - Video: ["Most People Want Validation, Not Perspective (Why This Matters Now)"](https://www.youtube.com/watch?v=BaC5FEN2e4Y)
@@ -38,7 +38,7 @@ Unlike a real board, these AI directors are:
 
 ### The Core Idea
 
-Most career advice is generic. PCGS is personalized to YOUR specific situation:
+Most career advice is generic. my-career-board is personalized to YOUR specific situation:
 
 1. **You define your problems** - What are you actually paid to solve?
 2. **AI directors challenge you** - Are you avoiding hard truths?
@@ -138,7 +138,7 @@ Shows topics that come up repeatedly across your sessions. These are often areas
 
 ## Setting Up Your Problem Portfolio
 
-Your Problem Portfolio is the foundation of PCGS. It defines what you're actually paid to solve, which allows the AI directors to give you relevant, personalized feedback.
+Your Problem Portfolio is the foundation of my-career-board. It defines what you're actually paid to solve, which allows the AI directors to give you relevant, personalized feedback.
 
 ### What is a "Problem"?
 
@@ -580,7 +580,7 @@ Each AI director has a unique perspective and personality. Understanding them he
 **Q: Is my data private?**
 A: Yes. Your data is stored locally on the server running the application. It is not shared with anyone.
 
-**Q: How often should I use PCGS?**
+**Q: How often should I use my-career-board?**
 A: Recommended schedule:
 - Quick Audit: Weekly or bi-weekly
 - Board Meeting: Once per quarter
@@ -631,7 +631,7 @@ A:
 
 ## Getting the Most Value
 
-PCGS works best when you:
+my-career-board works best when you:
 
 1. **Use it consistently** - Sporadic use provides sporadic value
 2. **Be brutally honest** - The AI can't help if you're not truthful
@@ -639,7 +639,7 @@ PCGS works best when you:
 4. **Act on insights** - Knowledge without action is useless
 5. **Track progress** - Review history to see patterns and growth
 
-Remember: PCGS is a tool for self-accountability. It won't do the hard work for you - but it will make sure you can't hide from what you know you need to do.
+Remember: my-career-board is a tool for self-accountability. It won't do the hard work for you - but it will make sure you can't hide from what you know you need to do.
 
 ---
 

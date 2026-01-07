@@ -1,8 +1,8 @@
-# PCGS Quick Start Guide
+# my-career-board Quick Start Guide
 
 ## Get Started in 5 Minutes
 
-This guide gets you from zero to your first meaningful session with PCGS. Follow along with the examples to see how the system works in practice.
+This guide gets you from zero to your first meaningful session with my-career-board. Follow along with the examples to see how the system works in practice.
 
 > **Inspired by Nate Jones:** [YouTube](https://www.youtube.com/watch?v=BaC5FEN2e4Y) | [Substack](https://natesnewsletter.substack.com/p/the-rarest-thing-in-work-why-360)
 
@@ -140,7 +140,7 @@ anyone because I'm afraid of looking incompetent.
 
 ## 10 Educational Use Cases
 
-These real-world scenarios show you how to use PCGS effectively.
+These real-world scenarios show you how to use my-career-board effectively.
 
 ---
 
@@ -471,4 +471,4 @@ Dashboard → Amber card → "View Portfolio"
 
 ---
 
-You're ready to use PCGS effectively. Start with a Quick Audit today!
+You're ready to use my-career-board effectively. Start with a Quick Audit today!

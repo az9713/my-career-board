@@ -1,8 +1,8 @@
-# PCGS Architecture Overview
+# my-career-board Architecture Overview
 
 ## System Architecture for Developers
 
-This document explains the complete architecture of PCGS, from high-level concepts to implementation details.
+This document explains the complete architecture of my-career-board, from high-level concepts to implementation details.
 
 ---
 
