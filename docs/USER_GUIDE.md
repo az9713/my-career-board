@@ -8,7 +8,7 @@ Welcome to my-career-board - your AI-powered career accountability partner. This
 
 ## Table of Contents
 
-1. [What is my-career-board?](#what-is-pcgs)
+1. [What is my-career-board?](#what-is-my-career-board)
 2. [Getting Started](#getting-started)
 3. [Understanding Your Dashboard](#understanding-your-dashboard)
 4. [Setting Up Your Problem Portfolio](#setting-up-your-problem-portfolio)

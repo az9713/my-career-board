@@ -523,7 +523,7 @@ const userId = session?.user?.id
 ### Detailed File Map
 
 ```
-pcgs/
+my-career-board/
 ├── src/
 │   ├── app/                              # Next.js App Router
 │   │   ├── (auth)/                       # Auth route group

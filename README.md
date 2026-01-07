@@ -48,7 +48,7 @@ my-career-board treats your career like a company - with you as the CEO reportin
 
 ```bash
 # 1. Clone or navigate to the project
-cd pcgs
+cd my-career-board
 
 # 2. Install dependencies
 npm install
@@ -116,7 +116,7 @@ ANTHROPIC_API_KEY=sk-ant-api03-your-key-here
 ## Project Structure
 
 ```
-pcgs/
+my-career-board/
 ├── src/
 │   ├── app/              # Pages and API routes
 │   ├── components/       # React components

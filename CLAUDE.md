@@ -29,7 +29,7 @@ my-career-board is a Next.js web application that provides AI-powered career acc
 ## Project Structure
 
 ```
-pcgs/
+my-career-board/
 ├── src/
 │   ├── app/                      # Next.js App Router pages
 │   │   ├── (auth)/               # Auth pages (login, signup)

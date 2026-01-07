@@ -236,11 +236,11 @@ cd C:\Users\YourName\Projects  # Windows
 cd ~/Projects                   # Mac/Linux
 
 # 2. Clone the repository (if from Git)
-git clone <repository-url> pcgs
-cd pcgs
+git clone <repository-url> my-career-board
+cd my-career-board
 
 # OR if you have the folder already
-cd C:\Users\simon\Downloads\pcgs
+cd C:\Users\YourName\Downloads\my-career-board
 
 # 3. Install dependencies (like Maven's mvn install)
 npm install
