@@ -25,6 +25,7 @@ model User {
   boardRoles    BoardRole[]
   boardSessions BoardSession[]
   reports       QuarterlyReport[]
+  bets          Bet[]
 }
 
 // Problem Portfolio
@@ -131,4 +132,27 @@ model QuarterlyReport {
   user    User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+}
+
+// Bets - Falsifiable commitments for accountability tracking
+model Bet {
+  id                  String    @id @default(cuid())
+  userId              String
+  content             String    // The bet statement
+  falsifiableCriteria String    // How to determine if bet was hit or missed
+  deadline            DateTime  // When the bet should be evaluated
+  quarter             String    // e.g., "Q1-2024"
+  status              String    @default("pending") // pending, resolved
+  outcome             String?   // hit, miss, excused
+  evidence            String?   // Proof if bet was hit
+  reflection          String?   // Reflection if bet was missed or excused
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  resolvedAt          DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([quarter])
+  @@index([status])
 }
