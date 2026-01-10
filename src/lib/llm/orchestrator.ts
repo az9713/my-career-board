@@ -36,6 +36,11 @@ export function getActiveDirector(state: OrchestratorState): DirectorPersona {
   return getDirector(state.activeDirector) || DIRECTOR_PERSONAS[0]
 }
 
+export function getDirectorForPhase(phase: number): DirectorPersona {
+  const phaseConfig = BOARD_MEETING_PHASES[phase] || BOARD_MEETING_PHASES[0]
+  return getDirector(phaseConfig.leadDirector) || DIRECTOR_PERSONAS[0]
+}
+
 // Check if any director should interject based on user message
 export function checkForInterjection(
   userMessage: string,
