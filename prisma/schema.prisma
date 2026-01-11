@@ -30,6 +30,7 @@ model User {
   reports       QuarterlyReport[]
   bets          Bet[]
   reminders     Reminder[]
+  contexts      UserContext[]
 }
 
 // Problem Portfolio
@@ -178,5 +179,24 @@ model Reminder {
   @@index([userId])
   @@index([scheduledFor])
   @@index([sent])
+  @@index([type])
+}
+
+// User Context - Personal context for AI directors
+model UserContext {
+  id         String   @id @default(cuid())
+  userId     String
+  type       String   // resume, linkedin, document, notes
+  name       String   // User-defined name for this context
+  rawText    String?  // Original text content
+  parsedData String?  // JSON with extracted structured data
+  summary    String?  // AI-generated summary for director prompts
+  metadata   String?  // JSON with file info, source, etc.
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
   @@index([type])
 }
