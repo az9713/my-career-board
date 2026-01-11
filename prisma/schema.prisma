@@ -11,14 +11,17 @@ datasource db {
 
 // User account for authentication
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  password      String
-  name          String?
-  avatarUrl     String?
-  settings      String    @default("{\"llm_provider\": \"anthropic\", \"notifications_enabled\": true}")
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id                      String    @id @default(cuid())
+  email                   String    @unique
+  password                String
+  name                    String?
+  avatarUrl               String?
+  settings                String    @default("{\"llm_provider\": \"anthropic\", \"notifications_enabled\": true}")
+  timezone                String    @default("UTC")
+  notificationPreferences String?   // JSON with email preferences
+  notificationEmail       String?   // Override email for notifications
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
 
   // Relations
   problems      Problem[]
@@ -26,6 +29,7 @@ model User {
   boardSessions BoardSession[]
   reports       QuarterlyReport[]
   bets          Bet[]
+  reminders     Reminder[]
 }
 
 // Problem Portfolio
@@ -155,4 +159,24 @@ model Bet {
   @@index([userId])
   @@index([quarter])
   @@index([status])
+}
+
+// Reminders - Scheduled notifications for users
+model Reminder {
+  id           String    @id @default(cuid())
+  userId       String
+  type         String    // quarterly_review, weekly_checkin, avoidance_alert, streak_milestone
+  scheduledFor DateTime  // When to send the reminder
+  sent         Boolean   @default(false)
+  sentAt       DateTime?
+  metadata     String?   // JSON with additional context
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([scheduledFor])
+  @@index([sent])
+  @@index([type])
 }
