@@ -33,6 +33,10 @@ model User {
   contexts       UserContext[]
   accounts       Account[]
   calendarEvents CalendarEvent[]
+  teamMembers    TeamMember[]
+  teamInvitesSent TeamInvite[]   @relation("InvitedBy")
+  feedbackGiven  PeerFeedback[] @relation("FeedbackFrom")
+  feedbackReceived PeerFeedback[] @relation("FeedbackTo")
 }
 
 // Problem Portfolio
@@ -244,4 +248,69 @@ model CalendarEvent {
   @@index([userId])
   @@index([startTime])
   @@index([type])
+}
+
+// Team - Accountability groups
+model Team {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members  TeamMember[]
+  invites  TeamInvite[]
+  feedback PeerFeedback[]
+}
+
+// TeamMember - Team membership with roles
+model TeamMember {
+  id        String   @id @default(cuid())
+  teamId    String
+  userId    String
+  role      String   @default("member") // owner, admin, member
+  joinedAt  DateTime @default(now())
+
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+  @@index([teamId])
+  @@index([userId])
+}
+
+// TeamInvite - Pending team invitations
+model TeamInvite {
+  id          String   @id @default(cuid())
+  teamId      String
+  email       String
+  invitedById String
+  status      String   @default("pending") // pending, accepted, declined
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  team      Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  invitedBy User @relation("InvitedBy", fields: [invitedById], references: [id], onDelete: Cascade)
+
+  @@index([teamId])
+  @@index([email])
+  @@index([status])
+}
+
+// PeerFeedback - Feedback between team members
+model PeerFeedback {
+  id         String   @id @default(cuid())
+  teamId     String
+  fromUserId String
+  toUserId   String
+  type       String   // encouragement, suggestion, concern, celebration
+  content    String
+  createdAt  DateTime @default(now())
+
+  team     Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  fromUser User @relation("FeedbackFrom", fields: [fromUserId], references: [id], onDelete: Cascade)
+  toUser   User @relation("FeedbackTo", fields: [toUserId], references: [id], onDelete: Cascade)
+
+  @@index([teamId])
+  @@index([toUserId])
 }
