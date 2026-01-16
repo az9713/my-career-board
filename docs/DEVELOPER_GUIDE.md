@@ -331,22 +331,30 @@ src/app/
 │   │       └── page.tsx      # /history/abc123
 │   └── settings/
 │       └── page.tsx          # /settings
-├── api/                       # Backend API routes
-│   ├── auth/
-│   │   └── signup/
-│   │       └── route.ts      # POST /api/auth/signup
-│   ├── portfolio/
-│   │   ├── route.ts          # GET /api/portfolio
-│   │   └── problems/
-│   │       └── route.ts      # POST /api/portfolio/problems
-│   ├── board/
-│   │   ├── route.ts          # POST /api/board
-│   │   └── [sessionId]/
-│   │       └── message/
-│   │           └── route.ts  # POST /api/board/{id}/message
-│   └── sessions/
-│       └── [sessionId]/
-│           └── route.ts      # GET /api/sessions/{id}
+├── api/                       # Backend API routes (20+ modules)
+│   ├── auth/                  # Authentication endpoints
+│   ├── analytics/             # Analytics & bet analytics
+│   ├── bets/                  # Bet tracking & resolution
+│   ├── board/                 # Board sessions & streaming
+│   ├── calendar/              # Calendar events & export
+│   ├── checkins/              # Micro check-ins & streaks
+│   ├── compensation/          # Salary, equity & benchmarks
+│   ├── context/               # User context uploads
+│   ├── cron/                  # Scheduled reminders
+│   ├── decisions/             # Decision journal & outcomes
+│   ├── evidence/              # Evidence vault
+│   ├── export/                # PDF/CSV export
+│   ├── feedback/              # 360° feedback
+│   ├── learning/              # Learning resources & certs
+│   ├── network/               # Mentor network & contacts
+│   ├── notifications/         # Notification preferences
+│   ├── oauth/                 # OAuth providers & accounts
+│   ├── okrs/                  # OKR periods & objectives
+│   ├── portfolio/             # Problem portfolio
+│   ├── sessions/              # Audit sessions
+│   ├── skills/                # Skills & gap analysis
+│   ├── teams/                 # Team collaboration
+│   └── timeline/              # Career timeline
 ├── layout.tsx                 # Root layout (wraps all pages)
 ├── page.tsx                   # Home page (/)
 └── globals.css                # Global styles
@@ -375,6 +383,28 @@ src/components/
 ├── audit/                     # Audit-specific components
 │   ├── AuditChat.tsx
 │   └── SpecificityGate.tsx
+├── bets/                      # Bet tracking components
+│   ├── BetCard.tsx
+│   ├── BetAccuracyWidget.tsx
+│   └── BetResolutionModal.tsx
+├── charts/                    # Data visualization
+│   ├── AccuracyChart.tsx
+│   └── TimeAllocationChart.tsx
+├── compensation/              # Compensation tracker UI
+│   ├── CompensationHistory.tsx
+│   ├── EquityGrants.tsx
+│   └── VestingSchedule.tsx
+├── feedback360/               # 360° feedback UI
+│   ├── FeedbackRequestForm.tsx
+│   ├── FeedbackSurvey.tsx
+│   └── ResultsAggregation.tsx
+├── learning/                  # Learning path UI
+│   ├── LearningDashboard.tsx
+│   ├── LearningResources.tsx
+│   ├── LearningGoals.tsx
+│   └── Certifications.tsx
+├── mobile/                    # Mobile responsive components
+│   └── MobileNav.tsx
 └── shared/                    # Shared across features
     └── LoadingSpinner.tsx
 ```
@@ -393,10 +423,58 @@ src/lib/
 │   └── patterns.ts            # Pattern detection logic
 ├── llm/
 │   ├── providers/
-│   │   └── anthropic.ts       # Claude API client
+│   │   ├── anthropic.ts       # Claude API client
+│   │   └── openai.ts          # OpenAI API client
 │   └── orchestrator.ts        # Board meeting orchestration (SERVER-ONLY)
-└── prisma/
-    └── client.ts              # Database client singleton
+├── prisma/
+│   └── client.ts              # Database client singleton
+├── streaming/
+│   └── index.ts               # Real-time streaming utilities
+└── utils.ts                   # Utility functions
+```
+
+### The src/__tests__ Folder (Test Suites)
+
+The project uses Test-Driven Development (TDD) with 897 tests:
+
+```
+src/__tests__/
+├── api/                       # API route tests
+│   ├── bets/
+│   │   └── route.test.ts
+│   ├── checkins/
+│   │   └── route.test.ts
+│   ├── compensation/
+│   │   └── route.test.ts
+│   ├── decisions/
+│   │   └── route.test.ts
+│   ├── evidence/
+│   │   └── route.test.ts
+│   ├── feedback/
+│   │   └── route.test.ts
+│   ├── learning/
+│   │   └── route.test.ts
+│   ├── network/
+│   │   └── route.test.ts
+│   ├── okrs/
+│   │   └── route.test.ts
+│   ├── skills/
+│   │   └── route.test.ts
+│   └── timeline/
+│       └── route.test.ts
+├── components/                # Component tests
+│   ├── bets/
+│   │   └── BetCard.test.tsx
+│   ├── compensation/
+│   │   └── CompensationHistory.test.tsx
+│   ├── feedback360/
+│   │   └── Feedback360.test.tsx
+│   ├── learning/
+│   │   └── Learning.test.tsx
+│   └── ...
+└── lib/                       # Business logic tests
+    ├── analytics.test.ts
+    └── streaming.test.ts
 ```
 
 **CRITICAL: Client vs Server Code**
@@ -1289,6 +1367,118 @@ export async function GET() {
   return NextResponse.json(data)
 }
 ```
+
+---
+
+## Testing Guide
+
+### Test-Driven Development (TDD)
+
+This project follows TDD with the Red-Green-Refactor cycle:
+
+1. **RED**: Write a failing test first
+2. **GREEN**: Write minimum code to pass the test
+3. **REFACTOR**: Improve code while keeping tests green
+
+### Running Tests
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm test -- --watch
+
+# Run tests with coverage
+npm test -- --coverage
+
+# Run specific test file
+npm test -- src/__tests__/api/bets/route.test.ts
+
+# Run tests matching a pattern
+npm test -- --testNamePattern="should create"
+```
+
+### Writing Tests
+
+**API Route Test Example:**
+```typescript
+// src/__tests__/api/bets/route.test.ts
+import { NextRequest } from 'next/server'
+import { POST, GET } from '@/app/api/bets/route'
+import prisma from '@/lib/prisma/client'
+
+// Mock Prisma
+jest.mock('@/lib/prisma/client', () => ({
+  bet: {
+    create: jest.fn(),
+    findMany: jest.fn(),
+  },
+}))
+
+// Mock auth
+jest.mock('@/auth', () => ({
+  auth: jest.fn(() => ({ user: { id: 'test-user-id' } })),
+}))
+
+describe('POST /api/bets', () => {
+  it('should create a new bet', async () => {
+    const mockBet = { id: 'bet-1', content: 'Test bet' }
+    ;(prisma.bet.create as jest.Mock).mockResolvedValue(mockBet)
+
+    const request = new NextRequest('http://localhost/api/bets', {
+      method: 'POST',
+      body: JSON.stringify({
+        content: 'Test bet',
+        deadline: '2025-03-31',
+      }),
+    })
+
+    const response = await POST(request)
+    const data = await response.json()
+
+    expect(response.status).toBe(201)
+    expect(data.content).toBe('Test bet')
+  })
+})
+```
+
+**Component Test Example:**
+```typescript
+// src/__tests__/components/bets/BetCard.test.tsx
+import { render, screen, fireEvent } from '@testing-library/react'
+import '@testing-library/jest-dom'
+import { BetCard } from '@/components/bets/BetCard'
+
+describe('BetCard', () => {
+  const mockBet = {
+    id: 'bet-1',
+    content: 'Ship feature X',
+    deadline: '2025-03-31',
+    status: 'pending',
+  }
+
+  it('should display bet content and deadline', () => {
+    render(<BetCard bet={mockBet} />)
+
+    expect(screen.getByText('Ship feature X')).toBeInTheDocument()
+    expect(screen.getByText(/Mar 31/)).toBeInTheDocument()
+  })
+
+  it('should show resolve button for pending bets', () => {
+    render(<BetCard bet={mockBet} />)
+
+    expect(screen.getByRole('button', { name: /resolve/i })).toBeInTheDocument()
+  })
+})
+```
+
+### Test Coverage
+
+Current test coverage: 897 tests across:
+- API routes: 400+ tests
+- Components: 300+ tests
+- Business logic: 150+ tests
 
 ---
 

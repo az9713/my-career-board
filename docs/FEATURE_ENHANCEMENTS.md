@@ -1,40 +1,30 @@
-# Feature Enhancement Suggestions
+# Feature Enhancement Status
 
-This document outlines 10 meaningful enhancements for the my-career-board application to improve career accountability and user experience.
+This document tracks the implementation status of all planned and completed feature enhancements for my-career-board.
 
 ---
 
 ## Development Approach: Test-Driven Development (TDD)
 
-All features will be implemented using the **TDD methodology**:
+All features are implemented using the **TDD methodology**:
 
 ### TDD Cycle (Red-Green-Refactor)
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│  1. RED     → Write a failing test                      │
-│  2. GREEN   → Write minimum code to pass the test       │
-│  3. REFACTOR → Improve code while keeping tests green   │
-│  4. REPEAT  → Continue until feature is complete        │
-└─────────────────────────────────────────────────────────┘
+1. RED     -> Write a failing test
+2. GREEN   -> Write minimum code to pass the test
+3. REFACTOR -> Improve code while keeping tests green
+4. REPEAT  -> Continue until feature is complete
 ```
 
-### Test Infrastructure Setup (Required First)
-
-Before implementing features, set up testing infrastructure:
+### Test Infrastructure
 
 ```bash
-# Install testing dependencies
+# Testing dependencies installed
 npm install -D jest @types/jest ts-jest
 npm install -D @testing-library/react @testing-library/jest-dom
 npm install -D @testing-library/user-event
 npm install -D jest-environment-jsdom
-
-# For API route testing
-npm install -D node-mocks-http
-
-# For database testing
-npm install -D @prisma/client
 ```
 
 **Test file structure:**
@@ -43,817 +33,467 @@ src/
 ├── __tests__/
 │   ├── api/           # API route tests
 │   ├── components/    # React component tests
-│   ├── lib/           # Business logic tests
-│   └── integration/   # End-to-end integration tests
-├── lib/
-│   └── __tests__/     # Co-located unit tests (alternative)
+│   └── lib/           # Business logic tests
 ```
 
-**Test naming convention:**
-- Unit tests: `*.test.ts` or `*.test.tsx`
-- Integration tests: `*.integration.test.ts`
+**Current test count: 897 tests across all features**
 
 ---
 
-## Implementation Order (TDD)
+## Implementation Status Summary
 
-| Order | Feature | Test Categories |
-|-------|---------|-----------------|
-| 1 | Bet Tracking & Accountability Ledger | Unit, API, Component |
-| 2 | Streaming Director Responses | API, Integration |
-| 3 | Proactive Nudges & Reminders | Unit, API |
-| 4 | Career Trajectory Visualization | Component, Unit |
-| 5 | Session Replay & Learning Mode | Unit, Component |
-| 6 | Evidence Vault with Integrations | API, Integration |
-| 7 | Multi-Model AI Support | Unit, Integration |
-| 8 | Custom Director Personas | Unit, API, Component |
-| 9 | Problem Dependency Mapping | Unit, Component |
-| 10 | Peer Accountability Boards | Full stack |
+| Feature | Status | Tests | Phase |
+|---------|--------|-------|-------|
+| Bet Tracking & Accountability Ledger | COMPLETE | 45 | Core |
+| Streaming Director Responses | COMPLETE | 30 | Core |
+| Proactive Nudges & Reminders | COMPLETE | 35 | Core |
+| Career Trajectory Visualization | COMPLETE | 40 | Core |
+| Evidence Vault | COMPLETE | 55 | Phase 1 |
+| Micro Check-ins | COMPLETE | 52 | Phase 1 |
+| Decision Journal | COMPLETE | 48 | Phase 2 |
+| Career Timeline | COMPLETE | 52 | Phase 2 |
+| 360° Feedback Integration | COMPLETE | 65 | Phase 3 |
+| Skills Gap Analyzer | COMPLETE | 70 | Phase 3 |
+| Mentor Network & CRM | COMPLETE | 45 | Phase 4 |
+| Career OKRs | COMPLETE | 47 | Phase 4 |
+| Compensation Tracker | COMPLETE | 42 | Phase 5 |
+| Learning Path & Certifications | COMPLETE | 45 | Phase 5 |
+| Multi-Model AI Support | COMPLETE | 25 | Core |
+| Custom Director Personas | PARTIAL | - | Backlog |
+| Peer Accountability Boards | PARTIAL | - | Backlog |
+| Problem Dependency Mapping | BACKLOG | - | Backlog |
+| Session Replay & Learning Mode | BACKLOG | - | Backlog |
 
 ---
 
-## 1. Bet Tracking & Accountability Ledger
+## Completed Features
+
+### Core Infrastructure Features
+
+#### 1. Bet Tracking & Accountability Ledger (COMPLETE)
 
 Track quarterly bets with outcomes and calculate accuracy over time.
 
-**Current State:** Infrastructure exists (`QuarterlyReport` model, `betAccuracy` placeholder) but isn't functional.
+**Implementation:**
+- Database: `Bet` model with content, deadline, outcome fields
+- API Routes:
+  - `POST /api/bets` - Create new bet
+  - `PATCH /api/bets/[id]/resolve` - Resolve with hit/miss/excused
+  - `GET /api/bets/accuracy` - Get accuracy statistics
+- Components: `BetCard`, `BetAccuracyWidget`, `BetResolutionModal`
+- Features:
+  - Record falsifiable commitments with deadlines
+  - Mark outcomes as hit, miss, or excused (with evidence)
+  - Accuracy trends over time
+  - Directors reference past bet accuracy
 
-**Proposed Implementation:**
-- Record falsifiable commitments from board meetings with deadlines
-- At next review, mark bets as: hit, miss, or excused (with evidence)
-- Show accuracy trends: "You've hit 7/12 bets (58%) over 4 quarters"
-- Directors reference past bet accuracy in their responses
-- Dashboard widget showing bet history and success rate
-
-**Impact:** High | **Effort:** Medium
-
-### TDD Implementation Plan
-
-#### Step 1: RED - Write Failing Tests First
-
-**Unit Tests** (`src/__tests__/lib/bets.test.ts`):
-```typescript
-describe('Bet Service', () => {
-  describe('createBet', () => {
-    it('should create a bet with required fields')
-    it('should set default status to pending')
-    it('should require a deadline date')
-    it('should reject bets without falsifiable criteria')
-  })
-
-  describe('resolveBet', () => {
-    it('should mark bet as hit with evidence')
-    it('should mark bet as miss with reflection')
-    it('should mark bet as excused with reason')
-    it('should not allow resolving already resolved bets')
-  })
-
-  describe('calculateAccuracy', () => {
-    it('should return 0% with no resolved bets')
-    it('should calculate percentage correctly')
-    it('should exclude excused bets from calculation')
-    it('should filter by quarter when specified')
-  })
-})
-```
-
-**API Tests** (`src/__tests__/api/bets.test.ts`):
-```typescript
-describe('POST /api/bets', () => {
-  it('should create a new bet')
-  it('should return 401 if not authenticated')
-  it('should return 400 for invalid data')
-})
-
-describe('PATCH /api/bets/[id]/resolve', () => {
-  it('should resolve bet with outcome')
-  it('should return 404 for non-existent bet')
-})
-
-describe('GET /api/bets/accuracy', () => {
-  it('should return accuracy stats for user')
-})
-```
-
-**Component Tests** (`src/__tests__/components/BetCard.test.tsx`):
-```typescript
-describe('BetCard', () => {
-  it('should display bet content and deadline')
-  it('should show pending status badge')
-  it('should enable resolve actions for pending bets')
-  it('should display outcome for resolved bets')
-})
-
-describe('BetAccuracyWidget', () => {
-  it('should display accuracy percentage')
-  it('should show hit/miss/excused breakdown')
-  it('should link to bet history')
-})
-```
-
-#### Step 2: GREEN - Implement to Pass Tests
-
-1. Create `Bet` model in Prisma schema
-2. Create `src/lib/bets/service.ts` with business logic
-3. Create API routes: `POST /api/bets`, `PATCH /api/bets/[id]/resolve`, `GET /api/bets/accuracy`
-4. Create React components: `BetCard`, `BetAccuracyWidget`, `BetResolutionModal`
-5. Add to dashboard
-
-#### Step 3: REFACTOR
-
-- Extract common validation logic
-- Add TypeScript interfaces
-- Optimize database queries
-- Add error boundaries to components
+**Test Coverage:** 45 tests
 
 ---
 
-## 2. Evidence Vault with Integrations
+#### 2. Streaming Director Responses (COMPLETE)
 
-Let users attach "receipts" to prove commitments. Currently directors ask for evidence but there's no way to provide it.
+Real-time streaming for board meetings using Server-Sent Events.
 
-**Proposed Implementation:**
-- Connect GitHub (commits, PRs, merged code)
-- Connect Google Calendar (meeting attendance)
-- Connect LinkedIn (profile updates, posts)
-- Manual uploads (screenshots, documents)
-- Directors can verify claims: "I see you did ship 3 PRs last month"
-- Evidence linked to specific bets and claims
+**Implementation:**
+- API Routes:
+  - `GET /api/board/[sessionId]/stream` - SSE streaming endpoint
+- Library: `src/lib/streaming/` - Streaming utilities
+- Features:
+  - SSE connection with real-time token streaming
+  - Typing indicator with director avatar
+  - Progressive rendering as responses generate
+  - Fallback to polling if streaming fails
 
-**Impact:** High | **Effort:** High
-
-### TDD Implementation Plan
-
-#### Step 1: RED - Write Failing Tests First
-
-**Unit Tests** (`src/__tests__/lib/evidence.test.ts`):
-```typescript
-describe('Evidence Service', () => {
-  describe('attachEvidence', () => {
-    it('should link evidence to a bet')
-    it('should support multiple evidence types')
-    it('should validate evidence URLs')
-  })
-
-  describe('fetchGitHubActivity', () => {
-    it('should fetch commits for date range')
-    it('should fetch merged PRs')
-    it('should handle rate limiting')
-  })
-
-  describe('verifyEvidence', () => {
-    it('should auto-verify GitHub links')
-    it('should mark manual uploads as unverified')
-  })
-})
-```
-
-**Integration Tests** (`src/__tests__/integration/github.test.ts`):
-```typescript
-describe('GitHub Integration', () => {
-  it('should OAuth connect successfully')
-  it('should fetch user repositories')
-  it('should match commits to bet timeframes')
-})
-```
-
-#### Step 2: GREEN - Implementation Order
-1. Create `Evidence` model in Prisma
-2. Build manual upload flow first (simplest)
-3. Add GitHub OAuth integration
-4. Create evidence attachment UI
-5. Update director prompts to reference evidence
-
-#### Step 3: REFACTOR
-- Abstract integration providers
-- Add caching for API calls
-- Implement retry logic
+**Test Coverage:** 30 tests
 
 ---
 
-## 3. Streaming Director Responses
+#### 3. Proactive Nudges & Reminders (COMPLETE)
 
-Replace polling with real-time streaming for board meetings. Currently responses feel sluggish.
+Email notifications and scheduled reminders.
 
-**Proposed Implementation:**
-- Use Server-Sent Events (SSE) or WebSocket for streaming tokens
-- Show typing indicator with director avatar
-- Enable mid-stream interjections from other directors
-- Progressive rendering of responses as they generate
-- Fallback to polling if streaming fails
+**Implementation:**
+- Database: `Reminder` model, notification preferences in User
+- API Routes:
+  - `POST /api/notifications/preferences` - Update preferences
+  - `POST /api/cron/send-reminders` - Cron job for scheduled reminders
+- Features:
+  - Email notifications for quarterly reviews
+  - Weekly micro-check-in reminders
+  - Avoidance alerts based on patterns
+  - Calendar integration
+  - Streak tracking
 
-**Impact:** High | **Effort:** Medium
-
-### TDD Implementation Plan
-
-#### Step 1: RED - Write Failing Tests First
-
-**Unit Tests** (`src/__tests__/lib/streaming.test.ts`):
-```typescript
-describe('Streaming Service', () => {
-  describe('createStream', () => {
-    it('should create SSE connection')
-    it('should emit tokens as they arrive')
-    it('should handle connection errors')
-    it('should reconnect on disconnect')
-  })
-
-  describe('parseStreamChunk', () => {
-    it('should parse Anthropic stream format')
-    it('should detect end of stream')
-    it('should handle malformed chunks')
-  })
-})
-```
-
-**API Tests** (`src/__tests__/api/stream.test.ts`):
-```typescript
-describe('GET /api/board/[sessionId]/stream', () => {
-  it('should return SSE content-type')
-  it('should stream tokens progressively')
-  it('should include director metadata')
-  it('should fallback to polling on error')
-})
-```
-
-**Component Tests** (`src/__tests__/components/StreamingMessage.test.tsx`):
-```typescript
-describe('StreamingMessage', () => {
-  it('should render tokens as they arrive')
-  it('should show typing indicator while streaming')
-  it('should complete when stream ends')
-  it('should handle stream interruption gracefully')
-})
-```
-
-#### Step 2: GREEN - Implementation Order
-1. Create SSE endpoint with Anthropic streaming
-2. Build client-side EventSource hook
-3. Create StreamingMessage component
-4. Add typing indicator UI
-5. Implement fallback polling
-
-#### Step 3: REFACTOR
-- Add connection pooling
-- Optimize re-renders with useMemo
-- Add stream buffering for smooth display
+**Test Coverage:** 35 tests
 
 ---
 
-## 4. Career Trajectory Visualization
+#### 4. Career Trajectory Visualization (COMPLETE)
 
-Add visual dashboards showing progress over time. Currently all insights are text-based.
+Visual dashboards showing progress over time.
 
-**Proposed Implementation:**
-- Problem classification changes over time (is your skillset appreciating?)
-- Time allocation shifts across quarters (stacked area chart)
-- Avoidance patterns heatmap (what you consistently avoid)
-- Commitment completion burndown chart
-- Bet accuracy trend line
-- Exportable quarterly "report card" PDF
+**Implementation:**
+- API Routes: `GET /api/analytics`, `GET /api/analytics/bets`
+- Components: `src/components/charts/`
+- Features:
+  - Problem classification changes over time
+  - Time allocation shifts (stacked area chart)
+  - Bet accuracy trend line
+  - Pattern detection insights
 
-**Libraries:** Recharts, D3.js, or Chart.js
-
-**Impact:** High | **Effort:** Medium
-
-### TDD Implementation Plan
-
-#### Step 1: RED - Write Failing Tests First
-
-**Unit Tests** (`src/__tests__/lib/analytics.test.ts`):
-```typescript
-describe('Analytics Service', () => {
-  describe('calculateTrajectory', () => {
-    it('should aggregate data by quarter')
-    it('should calculate trend direction')
-    it('should handle missing quarters')
-  })
-
-  describe('generateChartData', () => {
-    it('should format data for Recharts')
-    it('should include all required series')
-    it('should handle empty datasets')
-  })
-})
-```
-
-**Component Tests** (`src/__tests__/components/charts.test.tsx`):
-```typescript
-describe('BetAccuracyChart', () => {
-  it('should render line chart with accuracy data')
-  it('should show tooltip on hover')
-  it('should handle zero data gracefully')
-})
-
-describe('TimeAllocationChart', () => {
-  it('should render stacked area chart')
-  it('should show problem breakdown')
-  it('should animate on load')
-})
-
-describe('AvoidanceHeatmap', () => {
-  it('should render heatmap grid')
-  it('should color by frequency')
-  it('should show theme labels')
-})
-```
-
-#### Step 2: GREEN - Implementation Order
-1. Install Recharts library
-2. Create analytics data aggregation service
-3. Build individual chart components
-4. Create dashboard layout
-5. Add PDF export with react-pdf
-
-#### Step 3: REFACTOR
-- Memoize expensive calculations
-- Add responsive breakpoints
-- Implement lazy loading for charts
+**Test Coverage:** 40 tests
 
 ---
 
-## 5. Custom Director Personas
+#### 5. Multi-Model AI Support (COMPLETE)
 
-Allow users to create their own directors with specific expertise relevant to their career.
+Support for multiple LLM providers.
 
-**Current State:** Only 5 hardcoded directors in `personas.ts`.
+**Implementation:**
+- Library: `src/lib/llm/providers/`
+- API Routes: `GET /api/oauth/providers`
+- Features:
+  - Anthropic Claude (primary)
+  - OpenAI GPT-4 support
+  - Provider selection in settings
+  - Fallback chain on failures
 
-**Proposed Implementation:**
-- Define name, avatar, focus area, and personality
-- Write custom system prompts with guardrails
-- Example personas:
-  - "Startup Advisor" for founders
-  - "Technical Mentor" for engineers
-  - "Sales Coach" for business development
-- Mix custom directors with default ones in board meetings
-- Share custom personas with community (optional)
-
-**Impact:** Medium | **Effort:** Medium
-
-### TDD Implementation Plan
-
-#### Step 1: RED - Write Failing Tests First
-
-**Unit Tests** (`src/__tests__/lib/customDirectors.test.ts`):
-```typescript
-describe('Custom Director Service', () => {
-  describe('createDirector', () => {
-    it('should create director with required fields')
-    it('should validate system prompt length')
-    it('should sanitize prompt for safety')
-    it('should generate unique ID')
-  })
-
-  describe('mergeWithDefaults', () => {
-    it('should combine custom and default directors')
-    it('should allow replacing default directors')
-    it('should maintain director limit')
-  })
-})
-```
-
-**Component Tests** (`src/__tests__/components/DirectorBuilder.test.tsx`):
-```typescript
-describe('DirectorBuilder', () => {
-  it('should render form with all fields')
-  it('should preview director card')
-  it('should validate required fields')
-  it('should save director on submit')
-})
-```
-
-#### Step 2: GREEN - Implementation Order
-1. Create `CustomDirector` model in Prisma
-2. Build director CRUD service
-3. Create DirectorBuilder form component
-4. Update board meeting to include custom directors
-5. Add director management page
-
-#### Step 3: REFACTOR
-- Add prompt templates
-- Implement director sharing
-- Add avatar upload
+**Test Coverage:** 25 tests
 
 ---
 
-## 6. Proactive Nudges & Reminders
+### Phase 1: Evidence Vault & Micro Check-ins (COMPLETE)
 
-The app is currently passive—users must remember to check in.
+#### 6. Evidence Vault (COMPLETE)
 
-**Proposed Implementation:**
-- Email/push notifications when quarterly review is due
-- Weekly micro-check-ins (1 question, 2 minutes)
-- "Avoidance alert" if patterns suggest something's being dodged
-- Calendar integration to schedule recurring board meetings
-- Streak tracking for consistent accountability
-- Configurable reminder frequency and channels
+Document accomplishments, wins, feedback, and artifacts.
 
-**Infrastructure Needed:** Email service (Resend, SendGrid), cron jobs or scheduled functions
+**Implementation:**
+- Database: `Evidence`, `EvidenceAttachment`, `EvidenceProblemLink`
+- API Routes:
+  - `GET/POST /api/evidence` - List and create
+  - `GET/PUT/DELETE /api/evidence/[id]` - CRUD operations
+  - `GET /api/evidence/summary` - Analytics
+- Features:
+  - Categorize by type (win, feedback, metric, artifact, milestone)
+  - Track source (performance-review, self, manager, peer, customer)
+  - Link evidence to portfolio problems
+  - File attachments support
+  - Directors can reference evidence
 
-**Impact:** High | **Effort:** Low-Medium
-
-### TDD Implementation Plan
-
-#### Step 1: RED - Write Failing Tests First
-
-**Unit Tests** (`src/__tests__/lib/notifications.test.ts`):
-```typescript
-describe('Notification Service', () => {
-  describe('scheduleReminder', () => {
-    it('should create reminder for quarterly review')
-    it('should respect user timezone')
-    it('should not duplicate reminders')
-  })
-
-  describe('detectAvoidanceAlert', () => {
-    it('should trigger alert for recurring patterns')
-    it('should include pattern details in alert')
-    it('should respect alert cooldown')
-  })
-
-  describe('calculateStreak', () => {
-    it('should count consecutive check-ins')
-    it('should reset on missed week')
-    it('should handle timezone boundaries')
-  })
-})
-```
-
-**API Tests** (`src/__tests__/api/notifications.test.ts`):
-```typescript
-describe('POST /api/notifications/preferences', () => {
-  it('should update user notification preferences')
-  it('should validate email format')
-})
-
-describe('POST /api/cron/send-reminders', () => {
-  it('should send due reminders')
-  it('should mark reminders as sent')
-  it('should handle email failures')
-})
-```
-
-#### Step 2: GREEN - Implementation Order
-1. Add notification preferences to User model
-2. Create notification service with email provider
-3. Build cron job for scheduled reminders
-4. Create notification preferences UI
-5. Implement streak tracking
-
-#### Step 3: REFACTOR
-- Add notification queuing
-- Implement batch sending
-- Add unsubscribe handling
+**Test Coverage:** 55 tests
 
 ---
 
-## 7. Multi-Model AI Support
+#### 7. Micro Check-ins (COMPLETE)
 
-Currently locked to Anthropic Claude. Allow users to choose or compare AI providers.
+Lightweight daily/weekly reflection prompts.
 
-**Current State:** Settings UI has "Provider selection coming soon" placeholder.
+**Implementation:**
+- Database: `MicroCheckin`, `CheckinPrompt`, `CheckinStreak`
+- API Routes:
+  - `GET/POST /api/checkins` - Submit check-ins
+  - `GET /api/checkins/today` - Today's prompts
+  - `GET /api/checkins/streak` - Streak statistics
+  - `GET /api/checkins/insights` - Pattern insights
+- Features:
+  - Daily and weekly prompts
+  - Mood tracking (1-5 scale)
+  - Streak tracking with milestones
+  - Insights from check-in patterns
 
-**Proposed Implementation:**
-- Add OpenAI GPT-4/GPT-4o support
-- Add Google Gemini support
-- Add local models via Ollama
-- Use OpenRouter as unified API gateway
-- "Second opinion" mode: get responses from 2 models side-by-side
-- Fallback to alternate provider if primary fails
-- Per-director model assignment (different directors use different models)
-
-**Impact:** Medium | **Effort:** Medium
-
-### TDD Implementation Plan
-
-#### Step 1: RED - Write Failing Tests First
-
-**Unit Tests** (`src/__tests__/lib/providers.test.ts`):
-```typescript
-describe('LLM Provider Factory', () => {
-  describe('createProvider', () => {
-    it('should create Anthropic provider')
-    it('should create OpenAI provider')
-    it('should create Gemini provider')
-    it('should throw for unknown provider')
-  })
-
-  describe('generateResponse', () => {
-    it('should use consistent interface across providers')
-    it('should handle provider-specific errors')
-    it('should respect token limits')
-  })
-
-  describe('fallbackChain', () => {
-    it('should try next provider on failure')
-    it('should log fallback events')
-    it('should respect fallback order')
-  })
-})
-```
-
-**Integration Tests** (`src/__tests__/integration/providers.test.ts`):
-```typescript
-describe('Provider Integration', () => {
-  it('should get response from OpenAI')
-  it('should get response from Anthropic')
-  it('should fallback on rate limit')
-})
-```
-
-#### Step 2: GREEN - Implementation Order
-1. Create provider interface/abstract class
-2. Refactor Anthropic provider to implement interface
-3. Add OpenAI provider implementation
-4. Add provider selection to settings
-5. Implement fallback chain
-
-#### Step 3: REFACTOR
-- Add response caching
-- Implement cost tracking per provider
-- Add provider health monitoring
+**Test Coverage:** 52 tests
 
 ---
 
-## 8. Peer Accountability Boards
+### Phase 2: Decision Journal & Career Timeline (COMPLETE)
 
-Enable trusted peers to join as "external directors" for peer feedback.
+#### 8. Decision Journal (COMPLETE)
 
-**Proposed Implementation:**
-- Invite 1-2 real people to your board (colleagues, mentors)
-- They receive session summaries and can add async comments
-- Option for live peer-AI hybrid sessions
-- Privacy controls: choose what peers can see
-- Reciprocal accountability: join their board too
-- Peer-specific questions: "What has [name] been avoiding?"
+Track important career decisions with predictions and outcomes.
 
-**Impact:** High | **Effort:** High
+**Implementation:**
+- Database: `Decision`, `DecisionOutcome`, `DecisionTag`
+- API Routes:
+  - `GET/POST /api/decisions` - List and create
+  - `GET/PUT/DELETE /api/decisions/[id]` - CRUD
+  - `POST /api/decisions/[id]/outcome` - Record outcome
+  - `GET /api/decisions/review` - Due for review
+  - `GET /api/decisions/analytics` - Accuracy stats
+- Features:
+  - Log decisions with options considered
+  - Record predictions and confidence level
+  - Review outcomes and lessons learned
+  - Track prediction accuracy over time
+  - Category tagging
 
-### TDD Implementation Plan
-
-#### Step 1: RED - Write Failing Tests First
-
-**Unit Tests** (`src/__tests__/lib/peers.test.ts`):
-```typescript
-describe('Peer Service', () => {
-  describe('invitePeer', () => {
-    it('should create invitation with unique token')
-    it('should send invitation email')
-    it('should enforce peer limit')
-    it('should expire old invitations')
-  })
-
-  describe('acceptInvitation', () => {
-    it('should link peer to board')
-    it('should reject expired invitations')
-    it('should handle already-accepted invitations')
-  })
-
-  describe('getSharedContent', () => {
-    it('should filter content by privacy settings')
-    it('should include session summaries')
-    it('should exclude private notes')
-  })
-})
-```
-
-**API Tests** (`src/__tests__/api/peers.test.ts`):
-```typescript
-describe('POST /api/peers/invite', () => {
-  it('should create and send invitation')
-  it('should return 400 for invalid email')
-  it('should return 403 if peer limit reached')
-})
-
-describe('POST /api/peers/[id]/comment', () => {
-  it('should add peer comment to session')
-  it('should notify board owner')
-})
-```
-
-**Component Tests** (`src/__tests__/components/PeerManagement.test.tsx`):
-```typescript
-describe('PeerInviteForm', () => {
-  it('should validate email input')
-  it('should show pending invitations')
-  it('should allow revoking invitations')
-})
-
-describe('PeerCommentThread', () => {
-  it('should display peer comments')
-  it('should allow replies')
-  it('should show comment timestamps')
-})
-```
-
-#### Step 2: GREEN - Implementation Order
-1. Create `PeerInvitation` and `PeerConnection` models
-2. Build invitation flow with email
-3. Create privacy settings UI
-4. Add peer comment system
-5. Build shared session view for peers
-
-#### Step 3: REFACTOR
-- Add real-time comment updates
-- Implement peer activity notifications
-- Add peer removal flow
+**Test Coverage:** 48 tests
 
 ---
 
-## 9. Problem Dependency Mapping
+#### 9. Career Timeline (COMPLETE)
 
-Help users understand how their problems interconnect.
+Visualize career events and inflection points.
 
-**Proposed Implementation:**
-- Visual graph showing which problems block others
-- Identify "keystone" problems that unlock multiple areas
-- Time allocation vs. strategic importance matrix (2x2 grid)
-- AI-suggested rebalancing: "You're over-investing in depreciating skills"
-- Quarterly prompts to reassess problem priorities
-- Drag-and-drop problem prioritization
+**Implementation:**
+- Database: `TimelineEvent`, `CareerPhase`, `InflectionPoint`
+- API Routes:
+  - `GET/POST /api/timeline` - Events
+  - `GET/PUT /api/timeline/[id]` - Single event
+  - `GET /api/timeline/full` - Full timeline
+  - `POST /api/timeline/inflection-points` - Mark inflection
+- Features:
+  - Track job changes, decisions, achievements
+  - Define career phases with date ranges
+  - Mark inflection points (key moments)
+  - Importance levels for filtering
+  - Auto-populate from decisions, bets, evidence
 
-**Impact:** Medium | **Effort:** Medium
-
-### TDD Implementation Plan
-
-#### Step 1: RED - Write Failing Tests First
-
-**Unit Tests** (`src/__tests__/lib/dependencies.test.ts`):
-```typescript
-describe('Dependency Service', () => {
-  describe('addDependency', () => {
-    it('should link two problems')
-    it('should prevent circular dependencies')
-    it('should validate problem ownership')
-  })
-
-  describe('findKeystones', () => {
-    it('should identify problems with most dependents')
-    it('should return empty for no dependencies')
-    it('should rank by impact score')
-  })
-
-  describe('suggestRebalancing', () => {
-    it('should flag over-investment in depreciating skills')
-    it('should suggest keystone focus')
-    it('should consider time allocation')
-  })
-})
-```
-
-**Component Tests** (`src/__tests__/components/DependencyGraph.test.tsx`):
-```typescript
-describe('DependencyGraph', () => {
-  it('should render nodes for each problem')
-  it('should draw edges for dependencies')
-  it('should highlight keystones')
-  it('should support drag to create dependencies')
-})
-
-describe('PriorityMatrix', () => {
-  it('should render 2x2 grid')
-  it('should position problems by allocation/importance')
-  it('should allow drag repositioning')
-})
-```
-
-#### Step 2: GREEN - Implementation Order
-1. Add dependency fields to Problem model
-2. Create dependency service with graph algorithms
-3. Build interactive graph component (react-flow or d3)
-4. Create priority matrix UI
-5. Add AI rebalancing suggestions
-
-#### Step 3: REFACTOR
-- Optimize graph layout algorithm
-- Add dependency templates
-- Implement undo/redo for changes
+**Test Coverage:** 52 tests
 
 ---
 
-## 10. Session Replay & Learning Mode
+### Phase 3: 360° Feedback & Skills Gap (COMPLETE)
 
-Help users learn from their best accountability moments.
+#### 10. 360° Feedback Integration (COMPLETE)
 
-**Proposed Implementation:**
-- Bookmark powerful director challenges
-- "Breakthrough moments" detection (when specificity improved dramatically)
-- Export session highlights as reflection prompts
-- "What I learned" journaling after each session
-- Searchable transcript archive with semantic search
-- Tag and categorize insights for later reference
-- Weekly digest of past insights
+Request and aggregate multi-rater feedback.
 
-**Impact:** Medium | **Effort:** Low-Medium
+**Implementation:**
+- Database: `FeedbackRequest`, `FeedbackQuestion`, `FeedbackRecipient`, `FeedbackResponse`, `FeedbackQuestionResponse`, `SelfAssessment`
+- API Routes:
+  - `GET/POST /api/feedback` - Manage requests
+  - `GET /api/feedback/[id]` - Request details
+  - `GET /api/feedback/[id]/results` - Aggregated results
+  - `POST /api/feedback/respond` - Submit anonymous response
+  - `GET/POST /api/feedback/self-assessment` - Self-ratings
+- Features:
+  - Create feedback requests with custom questions
+  - Anonymous response collection via unique tokens
+  - Relationship categorization (manager, peer, direct-report)
+  - Results aggregation with blind spot analysis
+  - Self-assessment comparison
 
-### TDD Implementation Plan
+**Test Coverage:** 65 tests
 
-#### Step 1: RED - Write Failing Tests First
+---
 
-**Unit Tests** (`src/__tests__/lib/replay.test.ts`):
-```typescript
-describe('Replay Service', () => {
-  describe('bookmarkMessage', () => {
-    it('should create bookmark for message')
-    it('should allow adding notes to bookmark')
-    it('should prevent duplicate bookmarks')
-  })
+#### 11. Skills Gap Analyzer (COMPLETE)
 
-  describe('detectBreakthroughs', () => {
-    it('should identify specificity improvements')
-    it('should compare before/after gate scores')
-    it('should flag significant jumps')
-  })
+Track skills, proficiency levels, and market demand.
 
-  describe('searchTranscripts', () => {
-    it('should find messages by keyword')
-    it('should rank by relevance')
-    it('should filter by date range')
-  })
+**Implementation:**
+- Database: `Skill`, `MarketSkillDemand`, `SkillMarketDemand`, `SkillGap`, `SkillGoal`
+- API Routes:
+  - `GET/POST /api/skills` - Manage skills
+  - `PUT/DELETE /api/skills/[id]` - CRUD
+  - `POST /api/skills/analyze` - Run gap analysis
+  - `GET /api/skills/gaps` - Gap report
+  - `GET/POST /api/skills/goals` - Skill goals
+  - `GET /api/skills/analytics` - Insights
+- Features:
+  - Track skills by category (technical, soft-skill, domain, tool)
+  - Proficiency levels (1-5) with target levels
+  - Market demand data integration
+  - Automated gap identification
+  - Goal setting for skill development
 
-  describe('generateDigest', () => {
-    it('should compile weekly insights')
-    it('should include top bookmarks')
-    it('should summarize patterns')
-  })
-})
-```
+**Test Coverage:** 70 tests
 
-**Component Tests** (`src/__tests__/components/SessionReplay.test.tsx`):
-```typescript
-describe('BookmarkButton', () => {
-  it('should toggle bookmark state')
-  it('should show bookmark count')
-  it('should open note modal on long press')
-})
+---
 
-describe('TranscriptSearch', () => {
-  it('should render search input')
-  it('should show results with highlights')
-  it('should link to session context')
-})
+### Phase 4: Mentor Network & Career OKRs (COMPLETE)
 
-describe('InsightJournal', () => {
-  it('should render journal editor')
-  it('should auto-save drafts')
-  it('should link to session')
-})
-```
+#### 12. Mentor Network & CRM (COMPLETE)
 
-#### Step 2: GREEN - Implementation Order
-1. Add `Bookmark` and `Journal` models to Prisma
-2. Create bookmark toggle UI on messages
-3. Build transcript search with text indexing
-4. Create insight journal component
-5. Implement breakthrough detection algorithm
+Professional relationship management.
 
-#### Step 3: REFACTOR
-- Add semantic search with embeddings
-- Implement export to markdown/PDF
-- Add bookmark collections/folders
+**Implementation:**
+- Database: `Contact`, `Interaction`, `NetworkingGoal`
+- API Routes:
+  - `GET/POST /api/network/contacts` - Manage contacts
+  - `PUT/DELETE /api/network/contacts/[id]` - CRUD
+  - `GET/POST /api/network/interactions` - Log interactions
+  - `GET /api/network/follow-ups` - Due follow-ups
+  - `GET/POST /api/network/goals` - Networking goals
+  - `GET /api/network/analytics` - Network health
+- Features:
+  - Contact management with relationship types
+  - Interaction logging (meetings, calls, emails)
+  - Follow-up reminders
+  - Relationship strength tracking
+  - Networking goal setting
+
+**Test Coverage:** 45 tests
+
+---
+
+#### 13. Career OKRs (COMPLETE)
+
+Objectives and Key Results with progress tracking.
+
+**Implementation:**
+- Database: `OKRPeriod`, `Objective`, `KeyResult`, `KeyResultCheckIn`
+- API Routes:
+  - `GET/POST /api/okrs/periods` - OKR periods
+  - `PUT/DELETE /api/okrs/periods/[id]` - CRUD
+  - `GET/POST /api/okrs/objectives` - Objectives
+  - `PUT/DELETE /api/okrs/objectives/[id]` - CRUD
+  - `GET/POST /api/okrs/key-results` - Key results
+  - `PUT /api/okrs/key-results/[id]` - Update progress
+  - `GET /api/okrs/analytics` - OKR insights
+- Features:
+  - Period management (quarterly, yearly, custom)
+  - Objectives with categories and priorities
+  - Key results with different metric types
+  - Progress check-ins with history
+  - Confidence tracking
+  - Auto-calculated objective progress
+
+**Test Coverage:** 47 tests
+
+---
+
+### Phase 5: Compensation & Learning (COMPLETE)
+
+#### 14. Compensation Tracker (COMPLETE)
+
+Salary history, equity grants, and market benchmarks.
+
+**Implementation:**
+- Database: `CompensationRecord`, `EquityGrant`, `EquityVesting`, `CompensationBenchmark`
+- API Routes:
+  - `GET/POST /api/compensation/records` - Salary/bonus records
+  - `PUT/DELETE /api/compensation/records/[id]` - CRUD
+  - `GET/POST /api/compensation/equity` - Equity grants
+  - `PUT /api/compensation/equity/[id]` - Update
+  - `GET /api/compensation/vestings` - Vesting schedule
+  - `GET /api/compensation/analytics` - Total comp analysis
+- Features:
+  - Track salary, bonuses, signing bonuses
+  - Equity grant management (RSU, ISO, NSO, ESPP)
+  - Vesting schedule tracking
+  - Market benchmark comparisons
+  - Total compensation calculations
+
+**Test Coverage:** 42 tests
+
+---
+
+#### 15. Learning Path & Certifications (COMPLETE)
+
+Track courses, certifications, and learning goals.
+
+**Implementation:**
+- Database: `LearningResource`, `Certification`, `LearningGoal`
+- API Routes:
+  - `GET/POST /api/learning/resources` - Learning resources
+  - `PUT/DELETE /api/learning/resources/[id]` - CRUD
+  - `GET/POST /api/learning/certifications` - Certifications
+  - `PUT /api/learning/certifications/[id]` - Update
+  - `GET/POST /api/learning/goals` - Learning goals
+  - `GET /api/learning/analytics` - Learning stats
+- Features:
+  - Track courses, books, tutorials, conferences
+  - Progress tracking with completion status
+  - Certification management with expiry alerts
+  - Link to skills for gap closure
+  - Learning analytics dashboard
+
+**Test Coverage:** 45 tests
+
+---
+
+## Partially Implemented Features
+
+### 16. Custom Director Personas (PARTIAL)
+
+Allow users to create custom AI directors.
+
+**Current State:**
+- Infrastructure exists for custom directors
+- Settings placeholder present
+- Not fully exposed in UI
+
+**Remaining Work:**
+- Custom director builder UI
+- Prompt validation and safety
+- Director sharing functionality
+
+---
+
+### 17. Peer Accountability Boards (PARTIAL)
+
+Enable trusted peers to participate as external directors.
+
+**Current State:**
+- Team model exists with invitations
+- Peer feedback system implemented
+- Not integrated with board meetings
+
+**Remaining Work:**
+- Peer session view
+- Live hybrid sessions
+- Privacy controls UI
+
+---
+
+## Backlog Features
+
+### 18. Problem Dependency Mapping
+
+**Description:** Visual graph showing problem interconnections.
+
+**Planned Features:**
+- Dependency graph visualization
+- Keystone problem identification
+- Time allocation vs. importance matrix
+- AI-suggested rebalancing
+
+---
+
+### 19. Session Replay & Learning Mode
+
+**Description:** Learn from past accountability moments.
+
+**Planned Features:**
+- Bookmark powerful challenges
+- Breakthrough moment detection
+- Searchable transcript archive
+- Weekly insight digests
 
 ---
 
 ## Implementation Priority Matrix
 
-| Feature | Impact | Effort | Priority |
-|---------|--------|--------|----------|
-| Bet Tracking & Accountability Ledger | High | Medium | P1 |
-| Streaming Director Responses | High | Medium | P1 |
-| Proactive Nudges & Reminders | High | Low | P1 |
-| Career Trajectory Visualization | High | Medium | P2 |
-| Evidence Vault with Integrations | High | High | P2 |
-| Custom Director Personas | Medium | Medium | P2 |
-| Multi-Model AI Support | Medium | Medium | P2 |
-| Peer Accountability Boards | High | High | P3 |
-| Problem Dependency Mapping | Medium | Medium | P3 |
-| Session Replay & Learning Mode | Medium | Low | P3 |
-
----
-
-## Recommended Implementation Order
-
-### Phase 1: Core Accountability (P1)
-1. **Bet Tracking** - Foundational for measuring accountability
-2. **Streaming Responses** - Immediate UX improvement
-3. **Proactive Nudges** - Drives engagement and retention
-
-### Phase 2: Enhanced Insights (P2)
-4. **Career Visualization** - Makes progress tangible
-5. **Evidence Vault** - Proves commitments with data
-6. **Custom Directors** - Personalization for different careers
-7. **Multi-Model Support** - Flexibility and resilience
-
-### Phase 3: Social & Advanced (P3)
-8. **Peer Boards** - Adds human accountability layer
-9. **Problem Mapping** - Strategic planning support
-10. **Session Replay** - Learning from past sessions
+| Priority | Feature | Status |
+|----------|---------|--------|
+| P1 | Bet Tracking | COMPLETE |
+| P1 | Streaming Responses | COMPLETE |
+| P1 | Proactive Nudges | COMPLETE |
+| P2 | Career Visualization | COMPLETE |
+| P2 | Evidence Vault | COMPLETE |
+| P2 | Multi-Model Support | COMPLETE |
+| P2 | Decision Journal | COMPLETE |
+| P2 | Career Timeline | COMPLETE |
+| P2 | 360° Feedback | COMPLETE |
+| P2 | Skills Gap Analyzer | COMPLETE |
+| P3 | Mentor Network | COMPLETE |
+| P3 | Career OKRs | COMPLETE |
+| P3 | Compensation Tracker | COMPLETE |
+| P3 | Learning Path | COMPLETE |
+| P3 | Custom Directors | PARTIAL |
+| P3 | Peer Boards | PARTIAL |
+| P4 | Dependency Mapping | BACKLOG |
+| P4 | Session Replay | BACKLOG |
 
 ---
 
 ## Notes
 
-- All features should maintain the core philosophy of challenging users rather than validating them
-- Privacy and data security should be prioritized, especially for peer features
-- Mobile responsiveness should be considered for all new UI components
-- Each feature should include appropriate error handling and fallback states
+- All features maintain the core philosophy of challenging users rather than validating them
+- Privacy and data security are prioritized, especially for feedback and compensation features
+- Mobile responsiveness is considered for all UI components
+- Each feature includes appropriate error handling and fallback states
+- TDD ensures comprehensive test coverage (897 tests total)

@@ -471,4 +471,216 @@ Dashboard → Amber card → "View Portfolio"
 
 ---
 
+## New Feature Quick Starts
+
+The following features have been added to enhance your career accountability journey.
+
+---
+
+### Quick Start: Evidence Vault
+
+**Goal:** Document accomplishments to prove your commitments.
+
+1. **Access:** Dashboard -> Evidence section (or `/evidence`)
+2. **Add Your First Evidence:**
+   - Click "Add Evidence"
+   - **Title:** "Led Q1 Migration Project"
+   - **Type:** Select "milestone"
+   - **Source:** "self" (or "manager", "peer", "customer")
+   - **Impact Description:** "Successfully migrated 5 services to new platform, reducing deployment time by 40%"
+   - Click "Save"
+3. **Link to Portfolio:** Select which problem this evidence relates to
+
+**Pro Tip:** Add evidence immediately after accomplishments - it's easier to capture details when fresh.
+
+---
+
+### Quick Start: Micro Check-ins
+
+**Goal:** Build a daily reflection habit with streak tracking.
+
+1. **Access:** Dashboard -> Check-ins (or `/checkins`)
+2. **Complete Today's Check-in:**
+   - Answer the daily prompt (e.g., "What's one thing you're proud of today?")
+   - Rate your mood (1-5)
+   - Click "Submit"
+3. **Build Your Streak:**
+   - Complete check-ins daily to build streaks
+   - Earn milestones at 7, 30, 100 days
+
+**Pro Tip:** Set a daily reminder to check in at the same time each day.
+
+---
+
+### Quick Start: Decision Journal
+
+**Goal:** Track important decisions and learn from outcomes.
+
+1. **Access:** Dashboard -> Decisions (or `/decisions`)
+2. **Log a Decision:**
+   - Click "Log Decision"
+   - **Title:** "Accept senior role vs. stay as IC"
+   - **Options Considered:** List the alternatives
+   - **Your Prediction:** What you think will happen
+   - **Confidence:** How sure are you? (%)
+   - Click "Save"
+3. **Later: Record Outcome:**
+   - When the decision plays out, click "Record Outcome"
+   - Note what actually happened
+   - Capture lessons learned
+
+**Pro Tip:** Log decisions when you make them, not after you know how they turned out.
+
+---
+
+### Quick Start: Career Timeline
+
+**Goal:** Visualize your career journey.
+
+1. **Access:** Dashboard -> Timeline (or `/timeline`)
+2. **Add Key Events:**
+   - Click "Add Event"
+   - Types: job-change, promotion, achievement, decision, skill-gained
+   - Add dates, descriptions, and importance level
+3. **Mark Inflection Points:**
+   - Identify key moments that changed your career trajectory
+   - Click "Mark as Inflection Point" on significant events
+
+**Pro Tip:** Import your LinkedIn history or manually add past roles to build a complete picture.
+
+---
+
+### Quick Start: 360° Feedback
+
+**Goal:** Get anonymous feedback from colleagues.
+
+1. **Access:** Dashboard -> Feedback (or `/feedback`)
+2. **Create a Feedback Request:**
+   - Click "Request Feedback"
+   - Add recipients (email addresses)
+   - Categorize each: manager, peer, direct-report
+   - Choose questions or use defaults
+   - Set deadline
+3. **Share Links:** Recipients get unique anonymous links
+4. **View Results:** Once collected, see aggregated insights
+
+**Pro Tip:** Request feedback from 5-8 people for statistically meaningful results.
+
+---
+
+### Quick Start: Skills Gap Analyzer
+
+**Goal:** Identify skill gaps and create development plans.
+
+1. **Access:** Dashboard -> Skills (or `/skills`)
+2. **Add Your Skills:**
+   - Click "Add Skill"
+   - Name the skill
+   - Rate current proficiency (1-5)
+   - Set target level
+   - Categorize (technical, soft-skill, domain, tool)
+3. **Run Analysis:** Click "Analyze Gaps"
+4. **Set Goals:** Create skill development goals with deadlines
+
+**Pro Tip:** Include both hard and soft skills for a complete picture.
+
+---
+
+### Quick Start: Mentor Network
+
+**Goal:** Manage professional relationships.
+
+1. **Access:** Dashboard -> Network (or `/network`)
+2. **Add Contacts:**
+   - Click "Add Contact"
+   - Name, company, role
+   - Relationship type: mentor, sponsor, peer, mentee
+   - How you met, shared interests
+3. **Log Interactions:**
+   - After meetings, click "Log Interaction"
+   - Note key topics and follow-ups
+4. **Set Follow-up Reminders:** Never let relationships go cold
+
+**Pro Tip:** Add follow-up dates for each contact and review weekly.
+
+---
+
+### Quick Start: Career OKRs
+
+**Goal:** Set and track quarterly objectives.
+
+1. **Access:** Dashboard -> OKRs (or `/okrs`)
+2. **Create an OKR Period:**
+   - Click "New Period"
+   - Select: Q1 2025 (or custom dates)
+3. **Add Objectives:**
+   - Click "Add Objective"
+   - **Example:** "Become recognized as technical leader"
+   - Priority: P0/P1/P2
+4. **Add Key Results:**
+   - **Example KR1:** "Present at 2 company tech talks"
+   - **Example KR2:** "Mentor 3 junior engineers"
+   - **Example KR3:** "Publish 5 internal tech blogs"
+5. **Track Progress:** Update key results weekly
+
+**Pro Tip:** Have 3-5 objectives with 3-5 key results each.
+
+---
+
+### Quick Start: Compensation Tracker
+
+**Goal:** Track salary history and total compensation.
+
+1. **Access:** Dashboard -> Compensation (or `/compensation`)
+2. **Add Salary Records:**
+   - Click "Add Record"
+   - Type: salary, bonus, signing-bonus
+   - Amount, effective date, company
+3. **Add Equity Grants:**
+   - Click "Add Equity"
+   - Grant type: RSU, ISO, NSO, ESPP
+   - Total shares, vesting schedule
+4. **View Analytics:** See total compensation trends
+
+**Pro Tip:** Add all compensation components to see true total comp.
+
+---
+
+### Quick Start: Learning Path
+
+**Goal:** Track courses, certifications, and learning goals.
+
+1. **Access:** Dashboard -> Learning (or `/learning`)
+2. **Add Learning Resources:**
+   - Click "Add Resource"
+   - Type: course, book, video, tutorial, conference
+   - Provider (Coursera, Udemy, etc.)
+   - Track progress (%)
+3. **Add Certifications:**
+   - Click "Add Certification"
+   - Name, issuer, earned date
+   - Expiry date (get alerts before expiry)
+4. **Set Learning Goals:** Connect to skill gaps
+
+**Pro Tip:** Link learning to skill gaps for focused development.
+
+---
+
+## Feature Summary
+
+| Feature | Purpose | Time to Start |
+|---------|---------|---------------|
+| Evidence Vault | Document accomplishments | 5 min |
+| Micro Check-ins | Daily reflection | 2 min |
+| Decision Journal | Track decisions & outcomes | 5 min |
+| Career Timeline | Visualize career journey | 10 min |
+| 360° Feedback | Get anonymous feedback | 10 min |
+| Skills Gap | Identify development needs | 15 min |
+| Mentor Network | Manage relationships | 10 min |
+| Career OKRs | Set quarterly goals | 20 min |
+| Compensation | Track total comp | 10 min |
+| Learning Path | Track development | 10 min |
+
+---
+
 You're ready to use my-career-board effectively. Start with a Quick Audit today!
