@@ -52,6 +52,11 @@ model User {
   networkingGoals  NetworkingGoal[]
   okrPeriods       OKRPeriod[]
   objectives       Objective[]
+  compensationRecords CompensationRecord[]
+  equityGrants     EquityGrant[]
+  learningResources LearningResource[]
+  certifications   Certification[]
+  learningGoals    LearningGoal[]
 }
 
 // Problem Portfolio
@@ -891,4 +896,169 @@ model KeyResultCheckIn {
 
   @@index([keyResultId])
   @@index([createdAt])
+}
+
+// ========== Compensation & Equity Tracker ==========
+
+// CompensationRecord - Salary and bonus history
+model CompensationRecord {
+  id            String   @id @default(cuid())
+  userId        String
+  type          String   // salary, bonus, signing-bonus, raise
+  amount        Float
+  currency      String   @default("USD")
+  effectiveDate DateTime
+  company       String?
+  role          String?
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([type])
+  @@index([effectiveDate])
+}
+
+// EquityGrant - Stock options and RSU grants
+model EquityGrant {
+  id              String    @id @default(cuid())
+  userId          String
+  company         String
+  grantType       String    // rsu, iso, nso, espp
+  grantDate       DateTime
+  totalShares     Int
+  vestedShares    Int       @default(0)
+  strikePrice     Float?    // For options
+  currentPrice    Float?    // Current share price
+  vestingSchedule String?   // JSON describing vesting schedule
+  cliffMonths     Int?      // Cliff period in months
+  vestingMonths   Int?      // Total vesting period
+  status          String    @default("active") // active, fully-vested, expired, exercised
+  expirationDate  DateTime?
+  notes           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vestings EquityVesting[]
+
+  @@index([userId])
+  @@index([company])
+  @@index([status])
+}
+
+// EquityVesting - Individual vesting events
+model EquityVesting {
+  id          String   @id @default(cuid())
+  grantId     String
+  vestDate    DateTime
+  shares      Int
+  vested      Boolean  @default(false)
+  vestedAt    DateTime?
+  createdAt   DateTime @default(now())
+
+  grant EquityGrant @relation(fields: [grantId], references: [id], onDelete: Cascade)
+
+  @@index([grantId])
+  @@index([vestDate])
+}
+
+// CompensationBenchmark - Market salary comparisons
+model CompensationBenchmark {
+  id           String   @id @default(cuid())
+  role         String
+  level        String?  // junior, mid, senior, staff, principal
+  location     String?
+  industry     String?
+  percentile25 Float?
+  percentile50 Float    // Median
+  percentile75 Float?
+  percentile90 Float?
+  source       String?  // levels.fyi, glassdoor, etc.
+  dataDate     DateTime @default(now())
+  createdAt    DateTime @default(now())
+
+  @@index([role])
+  @@index([level])
+  @@index([location])
+}
+
+// ========== Learning Path & Certifications ==========
+
+// LearningResource - Courses, books, tutorials, conferences
+model LearningResource {
+  id           String    @id @default(cuid())
+  userId       String
+  title        String
+  type         String    // course, book, tutorial, conference, workshop, video
+  provider     String?   // Coursera, Udemy, O'Reilly, etc.
+  url          String?
+  skillId      String?   // Linked skill
+  status       String    @default("not-started") // not-started, in-progress, completed, abandoned
+  progress     Int       @default(0) // 0-100
+  startedAt    DateTime?
+  completedAt  DateTime?
+  rating       Int?      // 1-5 personal rating
+  notes        String?
+  cost         Float?
+  hoursSpent   Float?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([type])
+  @@index([status])
+  @@index([skillId])
+}
+
+// Certification - Professional certifications
+model Certification {
+  id             String    @id @default(cuid())
+  userId         String
+  name           String
+  issuer         String    // AWS, Google, Microsoft, etc.
+  credentialId   String?
+  credentialUrl  String?
+  skillId        String?   // Linked skill
+  earnedAt       DateTime
+  expiresAt      DateTime?
+  status         String    @default("active") // active, expired, renewed
+  renewalCost    Float?
+  notes          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([issuer])
+  @@index([status])
+  @@index([expiresAt])
+}
+
+// LearningGoal - Goals for learning, linked to skill gaps
+model LearningGoal {
+  id           String    @id @default(cuid())
+  userId       String
+  title        String
+  description  String?
+  skillGapId   String?   // Linked to a skill gap
+  targetDate   DateTime?
+  resources    String?   // JSON array of resource IDs
+  milestones   String?   // JSON array of milestones
+  progress     Int       @default(0) // 0-100
+  status       String    @default("active") // active, completed, abandoned
+  priority     String    @default("medium") // low, medium, high, critical
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+  @@index([skillGapId])
 }
