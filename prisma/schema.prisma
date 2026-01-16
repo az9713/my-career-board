@@ -48,6 +48,10 @@ model User {
   skills           Skill[]
   skillGaps        SkillGap[]
   skillGoals       SkillGoal[]
+  contacts         Contact[]
+  networkingGoals  NetworkingGoal[]
+  okrPeriods       OKRPeriod[]
+  objectives       Objective[]
 }
 
 // Problem Portfolio
@@ -733,4 +737,158 @@ model SkillGoal {
 
   @@index([userId])
   @@index([status])
+}
+
+// ========== Mentor Network & Networking Tracker ==========
+
+// Contact - Professional contacts in network
+model Contact {
+  id             String    @id @default(cuid())
+  userId         String
+  name           String
+  email          String?
+  company        String?
+  title          String?
+  relationship   String    // mentor, mentee, peer, sponsor, colleague, recruiter
+  strength       Int       @default(3) // 1-5 relationship strength
+  notes          String?
+  linkedinUrl    String?
+  lastContactAt  DateTime?
+  nextFollowUp   DateTime?
+  tags           String?   // JSON array of tags
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interactions Interaction[]
+
+  @@index([userId])
+  @@index([relationship])
+  @@index([strength])
+  @@index([nextFollowUp])
+}
+
+// Interaction - Log interactions with contacts
+model Interaction {
+  id          String   @id @default(cuid())
+  contactId   String
+  type        String   // meeting, email, call, coffee, event, linkedin, intro
+  date        DateTime @default(now())
+  summary     String?
+  notes       String?
+  followUpNeeded Boolean @default(false)
+  followUpDate   DateTime?
+  sentiment   String?  // positive, neutral, negative
+  createdAt   DateTime @default(now())
+
+  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@index([contactId])
+  @@index([date])
+  @@index([type])
+}
+
+// NetworkingGoal - Goals for networking activities
+model NetworkingGoal {
+  id          String    @id @default(cuid())
+  userId      String
+  title       String
+  description String?
+  targetCount Int?      // Target number (e.g., "Meet 5 new people")
+  currentCount Int      @default(0)
+  category    String    // expand-network, deepen-relationships, find-mentor, industry-connect
+  deadline    DateTime?
+  status      String    @default("active") // active, completed, abandoned
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([status])
+}
+
+// ========== Career OKRs & Goal Tracking ==========
+
+// OKRPeriod - Time periods for OKRs (quarters, years)
+model OKRPeriod {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String   // e.g., "Q1 2024", "2024"
+  type      String   // quarter, year, custom
+  startDate DateTime
+  endDate   DateTime
+  status    String   @default("active") // planning, active, completed, reviewed
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  objectives Objective[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([startDate])
+}
+
+// Objective - Career objectives
+model Objective {
+  id          String   @id @default(cuid())
+  periodId    String
+  userId      String
+  title       String
+  description String?
+  category    String   // growth, impact, learning, leadership, wellness
+  priority    Int      @default(2) // 1-3 priority level
+  progress    Int      @default(0) // 0-100 calculated from key results
+  status      String   @default("on-track") // on-track, at-risk, behind, completed
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  period     OKRPeriod   @relation(fields: [periodId], references: [id], onDelete: Cascade)
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  keyResults KeyResult[]
+
+  @@index([periodId])
+  @@index([userId])
+  @@index([status])
+}
+
+// KeyResult - Measurable key results for objectives
+model KeyResult {
+  id           String    @id @default(cuid())
+  objectiveId  String
+  title        String
+  description  String?
+  metricType   String    // number, percentage, boolean, currency
+  targetValue  Float     // Target to achieve
+  currentValue Float     @default(0) // Current progress
+  startValue   Float     @default(0) // Starting point
+  unit         String?   // e.g., "users", "revenue", "%"
+  progress     Int       @default(0) // 0-100 percentage
+  confidence   Int?      // 1-5 confidence in achieving
+  status       String    @default("on-track") // on-track, at-risk, behind, completed
+  notes        String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  objective     Objective         @relation(fields: [objectiveId], references: [id], onDelete: Cascade)
+  checkIns      KeyResultCheckIn[]
+
+  @@index([objectiveId])
+  @@index([status])
+}
+
+// KeyResultCheckIn - Progress updates for key results
+model KeyResultCheckIn {
+  id           String   @id @default(cuid())
+  keyResultId  String
+  value        Float    // Updated value
+  previousValue Float   // Value before this update
+  notes        String?
+  createdAt    DateTime @default(now())
+
+  keyResult KeyResult @relation(fields: [keyResultId], references: [id], onDelete: Cascade)
+
+  @@index([keyResultId])
+  @@index([createdAt])
 }
