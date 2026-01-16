@@ -40,9 +40,14 @@ model User {
   evidence       Evidence[]
   checkins       MicroCheckin[]
   checkinStreak  CheckinStreak?
-  decisions      Decision[]
-  timelineEvents TimelineEvent[]
-  careerPhases   CareerPhase[]
+  decisions        Decision[]
+  timelineEvents   TimelineEvent[]
+  careerPhases     CareerPhase[]
+  feedbackRequests FeedbackRequest[]
+  selfAssessments  SelfAssessment[]
+  skills           Skill[]
+  skillGaps        SkillGap[]
+  skillGoals       SkillGoal[]
 }
 
 // Problem Portfolio
@@ -519,4 +524,213 @@ model InflectionPoint {
   afterState  String? // State after this point
 
   event TimelineEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+// ========== 360° Feedback Integration ==========
+
+// FeedbackRequest - Request feedback from colleagues
+model FeedbackRequest {
+  id          String    @id @default(cuid())
+  userId      String    // User requesting feedback
+  title       String    // e.g., "Q1 2024 Feedback"
+  description String?   // Context for the feedback request
+  anonymous   Boolean   @default(true)
+  status      String    @default("open") // open, closed
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user       User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questions  FeedbackQuestion[]
+  responses  FeedbackResponse[]
+  recipients FeedbackRecipient[]
+
+  @@index([userId])
+  @@index([status])
+}
+
+// FeedbackQuestion - Questions in a feedback request
+model FeedbackQuestion {
+  id         String @id @default(cuid())
+  requestId  String
+  question   String
+  category   String // leadership, communication, technical, collaboration, etc.
+  type       String @default("scale") // scale (1-5), text, multiple-choice
+  options    String? // JSON array for multiple-choice
+  order      Int    @default(0)
+
+  request  FeedbackRequest           @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  answers  FeedbackQuestionResponse[]
+
+  @@index([requestId])
+}
+
+// FeedbackRecipient - Who is invited to give feedback
+model FeedbackRecipient {
+  id         String   @id @default(cuid())
+  requestId  String
+  email      String
+  name       String?
+  relationship String? // manager, peer, direct-report, cross-functional
+  token      String   @unique // Unique token for anonymous access
+  responded  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  request FeedbackRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  @@index([requestId])
+  @@index([email])
+  @@index([token])
+}
+
+// FeedbackResponse - Response to a feedback request
+model FeedbackResponse {
+  id           String   @id @default(cuid())
+  requestId    String
+  respondentId String?  // Null if anonymous
+  relationship String?  // manager, peer, direct-report, cross-functional
+  submittedAt  DateTime @default(now())
+
+  request FeedbackRequest            @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  answers FeedbackQuestionResponse[]
+
+  @@index([requestId])
+}
+
+// FeedbackQuestionResponse - Individual answers
+model FeedbackQuestionResponse {
+  id          String @id @default(cuid())
+  responseId  String
+  questionId  String
+  scaleValue  Int?   // For scale questions (1-5)
+  textValue   String? // For text questions
+  choiceValue String? // For multiple-choice
+
+  response FeedbackResponse @relation(fields: [responseId], references: [id], onDelete: Cascade)
+  question FeedbackQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([responseId])
+  @@index([questionId])
+}
+
+// SelfAssessment - User's self-assessment for comparison
+model SelfAssessment {
+  id        String   @id @default(cuid())
+  userId    String
+  category  String   // leadership, communication, technical, etc.
+  area      String   // Specific area within category
+  rating    Int      // 1-5 self-rating
+  notes     String?  // Optional notes
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([category])
+}
+
+// ========== Skills Gap Analyzer ==========
+
+// Skill - User's skills with proficiency
+model Skill {
+  id             String    @id @default(cuid())
+  userId         String
+  name           String
+  category       String    // technical, soft-skill, domain, tool
+  proficiency    Int       // 1-5 current proficiency
+  targetLevel    Int?      // 1-5 desired proficiency
+  lastAssessed   DateTime  @default(now())
+  yearsExperience Float?
+  notes          String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  user           User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  marketDemands  SkillMarketDemand[]
+  goals          SkillGoal[]
+
+  @@unique([userId, name])
+  @@index([userId])
+  @@index([category])
+}
+
+// MarketSkillDemand - Market demand data for skills
+model MarketSkillDemand {
+  id              String   @id @default(cuid())
+  skillName       String   // Normalized skill name
+  demandLevel     Int      // 1-5 how in-demand
+  growthTrend     String   // rising, stable, declining
+  salaryImpact    String?  // high, medium, low
+  jobPostings     Int?     // Number of job postings mentioning this
+  industry        String?  // Specific industry or "general"
+  source          String?  // Where this data came from
+  dataDate        DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  skillLinks SkillMarketDemand[]
+
+  @@index([skillName])
+  @@index([demandLevel])
+}
+
+// SkillMarketDemand - Link skills to market demand
+model SkillMarketDemand {
+  id             String @id @default(cuid())
+  skillId        String
+  marketDemandId String
+
+  skill        Skill             @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  marketDemand MarketSkillDemand @relation(fields: [marketDemandId], references: [id], onDelete: Cascade)
+
+  @@unique([skillId, marketDemandId])
+  @@index([skillId])
+  @@index([marketDemandId])
+}
+
+// SkillGap - Identified skill gaps
+model SkillGap {
+  id           String   @id @default(cuid())
+  userId       String
+  skillName    String
+  currentLevel Int?     // Current proficiency (null if not possessed)
+  requiredLevel Int     // Required for goal/market
+  gapSize      Int      // requiredLevel - currentLevel
+  priority     String   // critical, high, medium, low
+  source       String   // market-demand, job-target, self-identified
+  targetRole   String?  // If gap is for a specific role
+  notes        String?
+  status       String   @default("open") // open, in-progress, closed
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([priority])
+  @@index([status])
+}
+
+// SkillGoal - User goals for skill development
+model SkillGoal {
+  id           String    @id @default(cuid())
+  userId       String
+  skillId      String?   // Existing skill to improve
+  skillName    String    // Name (for new skills)
+  targetLevel  Int       // 1-5 target proficiency
+  deadline     DateTime?
+  reason       String?   // Why this goal
+  resources    String?   // JSON array of learning resources
+  milestones   String?   // JSON array of milestones
+  progress     Int       @default(0) // 0-100 percentage
+  status       String    @default("active") // active, completed, abandoned
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill Skill? @relation(fields: [skillId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([status])
 }
