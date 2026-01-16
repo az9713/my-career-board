@@ -16,8 +16,18 @@ Welcome to my-career-board - your AI-powered career accountability partner. This
 6. [Conducting a Board Meeting](#conducting-a-board-meeting)
 7. [Reviewing Your History](#reviewing-your-history)
 8. [Understanding the AI Directors](#understanding-the-ai-directors)
-9. [Tips for Effective Sessions](#tips-for-effective-sessions)
-10. [Frequently Asked Questions](#frequently-asked-questions)
+9. [Evidence Vault](#evidence-vault)
+10. [Micro Check-ins](#micro-check-ins)
+11. [Decision Journal](#decision-journal)
+12. [Career Timeline](#career-timeline)
+13. [360° Feedback](#360-feedback)
+14. [Skills Gap Analyzer](#skills-gap-analyzer)
+15. [Mentor Network](#mentor-network)
+16. [Career OKRs](#career-okrs)
+17. [Compensation Tracker](#compensation-tracker)
+18. [Learning Path](#learning-path)
+19. [Tips for Effective Sessions](#tips-for-effective-sessions)
+20. [Frequently Asked Questions](#frequently-asked-questions)
 
 ---
 
@@ -54,6 +64,16 @@ Most career advice is generic. my-career-board is personalized to YOUR specific 
 | **Board Meeting** | Deep quarterly review | 45-60 min |
 | **Session History** | Review past discussions | 5 min |
 | **Pattern Detection** | Spot recurring avoidance | Automatic |
+| **Evidence Vault** | Document accomplishments | 5 min per entry |
+| **Micro Check-ins** | Daily reflection prompts | 2-3 min daily |
+| **Decision Journal** | Track decisions & outcomes | 5 min per decision |
+| **Career Timeline** | Visualize career journey | 15 min setup |
+| **360° Feedback** | Get anonymous feedback | 10 min setup |
+| **Skills Gap Analyzer** | Identify development needs | 15 min setup |
+| **Mentor Network** | Manage relationships | 10 min per contact |
+| **Career OKRs** | Set quarterly goals | 20 min per quarter |
+| **Compensation Tracker** | Track total compensation | 10 min setup |
+| **Learning Path** | Track development resources | 5 min per resource |
 
 ---
 
@@ -518,6 +538,426 @@ Each AI director has a unique perspective and personality. Understanding them he
 
 ---
 
+## Evidence Vault
+
+The Evidence Vault helps you document accomplishments, wins, feedback, and artifacts to prove your commitments.
+
+### Why Use the Evidence Vault?
+
+- Build a "receipts" folder for performance reviews
+- Prove your claims during board meetings
+- Directors can reference your evidence when challenging you
+- Track impact over time
+
+### Adding Evidence
+
+1. Navigate to Dashboard -> Evidence
+2. Click "Add Evidence"
+3. Fill in:
+   - **Title**: Clear description (e.g., "Led Q1 Migration")
+   - **Type**: win, feedback, metric, artifact, or milestone
+   - **Source**: Where it came from (self, manager, peer, customer, performance-review)
+   - **Date**: When it happened
+   - **Impact Description**: What was the result?
+   - **Related Problems**: Link to your portfolio problems
+4. Optionally add attachments (screenshots, documents)
+5. Click "Save"
+
+### Evidence Types
+
+| Type | When to Use | Example |
+|------|-------------|---------|
+| **Win** | Major accomplishments | "Closed $500K deal" |
+| **Feedback** | Recognition received | "Praised by VP for presentation" |
+| **Metric** | Quantifiable results | "Reduced latency by 40%" |
+| **Artifact** | Proof documents | "Project completion report" |
+| **Milestone** | Career markers | "Promoted to Senior Engineer" |
+
+### Best Practices
+
+- Add evidence immediately after accomplishments
+- Be specific about impact and numbers
+- Link evidence to portfolio problems for context
+- Directors will reference evidence during board meetings
+
+---
+
+## Micro Check-ins
+
+Micro Check-ins are quick daily reflections that help you build accountability habits.
+
+### The Check-in Process
+
+1. Navigate to Dashboard -> Check-ins
+2. View today's prompt
+3. Write your response
+4. Rate your mood (1-5)
+5. Submit
+
+### Streak Tracking
+
+The system tracks your check-in streaks:
+- **Current Streak**: Consecutive days completed
+- **Longest Streak**: Your personal best
+- **Milestones**: Celebrated at 7, 30, 100 days
+
+### Check-in Insights
+
+After multiple check-ins, the system analyzes patterns:
+- Recurring themes in your responses
+- Mood trends over time
+- Topics you frequently mention
+
+### Best Practices
+
+- Check in at the same time daily (morning or evening)
+- Be honest, even on bad days
+- Review insights weekly to spot patterns
+
+---
+
+## Decision Journal
+
+The Decision Journal helps you track important career decisions and learn from outcomes.
+
+### Logging a Decision
+
+1. Navigate to Dashboard -> Decisions
+2. Click "Log Decision"
+3. Fill in:
+   - **Title**: What you're deciding
+   - **Context**: Why this decision matters
+   - **Options Considered**: What alternatives you evaluated
+   - **Your Prediction**: What you think will happen
+   - **Confidence Level**: How sure are you (%)
+   - **Tags**: Categorize (career, project, relationship, etc.)
+4. Click "Save"
+
+### Recording Outcomes
+
+When decisions play out:
+
+1. Go to the decision
+2. Click "Record Outcome"
+3. Fill in:
+   - **Actual Outcome**: What really happened
+   - **Lessons Learned**: What you would do differently
+4. The system calculates your prediction accuracy
+
+### Decision Analytics
+
+Track your decision-making patterns:
+- **Accuracy Rate**: How often predictions match reality
+- **Overconfidence Bias**: Do you predict too confidently?
+- **Category Patterns**: Where you decide well or poorly
+
+---
+
+## Career Timeline
+
+The Career Timeline visualizes your career journey and identifies key inflection points.
+
+### Adding Timeline Events
+
+1. Navigate to Dashboard -> Timeline
+2. Click "Add Event"
+3. Select event type:
+   - **Job Change**: New role or company
+   - **Promotion**: Level advancement
+   - **Achievement**: Significant accomplishment
+   - **Decision**: Major career decision
+   - **Skill Gained**: New capability acquired
+4. Add date, description, and importance level
+5. Click "Save"
+
+### Career Phases
+
+Define chapters of your career:
+- **Phase Name**: "Early Career at BigCorp"
+- **Date Range**: Start and end dates
+- **Color**: For visual distinction
+
+### Inflection Points
+
+Mark moments that changed your trajectory:
+- Click "Mark as Inflection Point" on significant events
+- Add before/after descriptions
+- Rate the impact level
+
+### Using Your Timeline
+
+- Review before board meetings to provide context
+- Identify patterns in your career moves
+- Spot skills gained at each phase
+
+---
+
+## 360° Feedback
+
+Request and receive anonymous feedback from colleagues, managers, and reports.
+
+### Creating a Feedback Request
+
+1. Navigate to Dashboard -> Feedback
+2. Click "Request Feedback"
+3. Add recipients:
+   - Enter email addresses
+   - Categorize each: manager, peer, direct-report
+4. Select questions (or use defaults)
+5. Set a deadline
+6. Click "Send Requests"
+
+### How Recipients Respond
+
+Recipients receive:
+- Unique, anonymous link (no login required)
+- Questions to answer
+- Assurance of anonymity
+
+### Viewing Results
+
+Once feedback is collected:
+- **Aggregated Scores**: Average ratings by category
+- **Comments**: Anonymous qualitative feedback
+- **Blind Spot Analysis**: Gaps between self-assessment and others' views
+
+### Self-Assessment
+
+Complete a self-assessment before viewing feedback:
+1. Rate yourself on the same questions
+2. Compare to others' ratings
+3. Identify perception gaps
+
+### Best Practices
+
+- Request from 5-8 people minimum
+- Include diverse relationships (up/across/down)
+- Review results without defensiveness
+- Create action items from feedback
+
+---
+
+## Skills Gap Analyzer
+
+Track your skills, proficiency levels, and identify gaps compared to career goals.
+
+### Adding Skills
+
+1. Navigate to Dashboard -> Skills
+2. Click "Add Skill"
+3. Fill in:
+   - **Skill Name**: Be specific
+   - **Category**: technical, soft-skill, domain, tool
+   - **Current Level**: Your proficiency (1-5)
+   - **Target Level**: Where you want to be
+4. Click "Save"
+
+### Proficiency Levels
+
+| Level | Description |
+|-------|-------------|
+| 1 | Beginner - Learning basics |
+| 2 | Developing - Can work with guidance |
+| 3 | Competent - Can work independently |
+| 4 | Proficient - Can teach others |
+| 5 | Expert - Industry recognized |
+
+### Running Gap Analysis
+
+1. Click "Analyze Gaps"
+2. View results:
+   - Skills below target level
+   - Recommended priority for development
+   - Connection to market demand
+
+### Setting Skill Goals
+
+1. Click "Set Goal" on any skill
+2. Define target level and deadline
+3. Track progress over time
+
+---
+
+## Mentor Network
+
+Manage your professional relationships with a personal CRM.
+
+### Adding Contacts
+
+1. Navigate to Dashboard -> Network
+2. Click "Add Contact"
+3. Fill in:
+   - **Name and Email**
+   - **Company and Role**
+   - **Relationship Type**: mentor, sponsor, peer, mentee
+   - **How You Met**
+   - **Tags and Notes**
+4. Click "Save"
+
+### Logging Interactions
+
+After meeting with contacts:
+1. Click on the contact
+2. Click "Log Interaction"
+3. Fill in:
+   - **Type**: meeting, call, email, message
+   - **Date**
+   - **Summary**: Key topics discussed
+   - **Follow-up Items**
+4. Click "Save"
+
+### Setting Follow-ups
+
+- Set next follow-up date for each contact
+- Receive reminders when follow-ups are due
+- Never let important relationships go cold
+
+### Network Analytics
+
+View insights about your network:
+- Relationship strength scores
+- Interaction frequency
+- Network diversity
+
+---
+
+## Career OKRs
+
+Set and track Objectives and Key Results for your career.
+
+### Creating an OKR Period
+
+1. Navigate to Dashboard -> OKRs
+2. Click "New Period"
+3. Select type: quarterly, yearly, or custom
+4. Set date range
+5. Click "Create"
+
+### Adding Objectives
+
+1. Within a period, click "Add Objective"
+2. Fill in:
+   - **Title**: What you want to achieve
+   - **Category**: growth, skills, leadership, impact
+   - **Priority**: P0 (critical), P1 (important), P2 (nice-to-have)
+3. Click "Save"
+
+### Adding Key Results
+
+For each objective:
+1. Click "Add Key Result"
+2. Fill in:
+   - **Title**: Measurable outcome
+   - **Metric Type**: number, percentage, currency, boolean
+   - **Target Value**: Success criteria
+3. Click "Save"
+
+### Tracking Progress
+
+- Update key results weekly
+- The system calculates objective progress automatically
+- Track confidence level (how likely to achieve)
+
+### OKR Best Practices
+
+- 3-5 objectives per period
+- 3-5 key results per objective
+- Key results should be measurable
+- Review weekly, not just quarterly
+
+---
+
+## Compensation Tracker
+
+Track your salary history, equity grants, and total compensation.
+
+### Adding Salary Records
+
+1. Navigate to Dashboard -> Compensation
+2. Click "Add Record"
+3. Fill in:
+   - **Type**: salary, bonus, signing-bonus
+   - **Amount**
+   - **Effective Date**
+   - **Company**
+   - **Role/Level**
+4. Click "Save"
+
+### Managing Equity Grants
+
+1. Click "Add Equity"
+2. Fill in:
+   - **Grant Type**: RSU, ISO, NSO, ESPP
+   - **Grant Date**
+   - **Total Shares**
+   - **Strike Price** (for options)
+   - **Vesting Schedule**: 4-year with 1-year cliff, etc.
+3. Track vesting events over time
+
+### Vesting Schedule
+
+View your vesting timeline:
+- Upcoming vest dates
+- Shares vesting at each date
+- Total vested vs. unvested
+
+### Compensation Analytics
+
+View insights:
+- Total compensation trends
+- Breakdown by component (salary, bonus, equity)
+- Year-over-year growth
+
+---
+
+## Learning Path
+
+Track your professional development: courses, certifications, and learning goals.
+
+### Adding Learning Resources
+
+1. Navigate to Dashboard -> Learning
+2. Click "Add Resource"
+3. Fill in:
+   - **Title**: Course or resource name
+   - **Type**: course, book, video, tutorial, podcast, conference
+   - **Provider**: Coursera, Udemy, O'Reilly, etc.
+   - **URL** (optional)
+   - **Status**: not_started, in_progress, completed, paused
+   - **Progress**: Percentage complete
+4. Click "Save"
+
+### Tracking Certifications
+
+1. Click "Add Certification"
+2. Fill in:
+   - **Certification Name**
+   - **Issuing Organization**
+   - **Credential ID** (optional)
+   - **Earned Date**
+   - **Expiry Date** (if applicable)
+3. Receive alerts before certifications expire
+
+### Setting Learning Goals
+
+1. Click "Add Goal"
+2. Fill in:
+   - **Title**: What you want to learn
+   - **Target Date**
+   - **Priority**
+   - **Related Skills**: Link to skills gap
+3. Track progress toward goals
+
+### Learning Analytics
+
+View your learning stats:
+- Total hours invested
+- Completion rates
+- Active vs. completed resources
+- Certification status
+
+---
+
 ## Tips for Effective Sessions
 
 ### Before the Session
@@ -610,6 +1050,26 @@ A: By design. A polite board wouldn't serve you. The directness helps cut throug
 **Q: Can I choose which director responds?**
 A: No. The meeting phase determines the lead director. Others may interject based on your responses.
 
+### Feature-Specific Questions
+
+**Q: How do I link evidence to my portfolio problems?**
+A: When adding evidence, select "Related Problems" and choose the relevant portfolio problems. Directors will reference this context during board meetings.
+
+**Q: Can I export my check-in history?**
+A: Yes, go to Check-ins -> Analytics and use the export option.
+
+**Q: Is 360° feedback really anonymous?**
+A: Yes. Recipients receive unique anonymous links. Individual responses are never shown - only aggregated results with minimum response counts.
+
+**Q: How does the Skills Gap Analyzer know market demand?**
+A: Market demand data is based on industry trends and salary impact. Note that this is indicative, not real-time market data.
+
+**Q: Can I share my OKRs with my manager?**
+A: Export functionality allows you to generate a PDF of your OKRs to share externally.
+
+**Q: How do I track RSU vesting?**
+A: Add your equity grant with the vesting schedule (e.g., "4-year with 1-year cliff"). The system automatically calculates vest dates.
+
 ### Technical Questions
 
 **Q: The page isn't loading. What do I do?**
@@ -626,6 +1086,9 @@ A:
 1. Check your internet connection
 2. The AI API might be overloaded - wait and try again
 3. Check that the ANTHROPIC_API_KEY is configured
+
+**Q: How do I run tests?**
+A: Run `npm test` to execute all 897 tests. Use `npm test -- --watch` for development.
 
 ---
 

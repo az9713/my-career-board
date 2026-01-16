@@ -15,9 +15,10 @@ This document explains the complete architecture of my-career-board, from high-l
 5. [AI Integration Architecture](#ai-integration-architecture)
 6. [Authentication Architecture](#authentication-architecture)
 7. [Database Schema](#database-schema)
-8. [File Organization](#file-organization)
-9. [Key Design Decisions](#key-design-decisions)
-10. [Extending the System](#extending-the-system)
+8. [Feature Modules](#feature-modules)
+9. [File Organization](#file-organization)
+10. [Key Design Decisions](#key-design-decisions)
+11. [Extending the System](#extending-the-system)
 
 ---
 
@@ -47,10 +48,13 @@ This document explains the complete architecture of my-career-board, from high-l
 │  │  └─────────────┘  └─────────────┘  └─────────────────────────┘  │   │
 │  └─────────────────────────────────────────────────────────────────┘   │
 │  ┌─────────────────────────────────────────────────────────────────┐   │
-│  │                       API Routes                                 │   │
-│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐  │   │
-│  │  │  /api/auth  │  │ /api/board  │  │  /api/portfolio         │  │   │
-│  │  └─────────────┘  └─────────────┘  └─────────────────────────┘  │   │
+│  │                       API Routes (20+ modules)                   │   │
+│  │  ┌─────────┐ ┌─────────┐ ┌──────────┐ ┌───────────┐ ┌────────┐  │   │
+│  │  │  auth   │ │  board  │ │ evidence │ │ decisions │ │ skills │  │   │
+│  │  └─────────┘ └─────────┘ └──────────┘ └───────────┘ └────────┘  │   │
+│  │  ┌─────────┐ ┌─────────┐ ┌──────────┐ ┌───────────┐ ┌────────┐  │   │
+│  │  │ feedback│ │ network │ │   okrs   │ │   comp    │ │learning│  │   │
+│  │  └─────────┘ └─────────┘ └──────────┘ └───────────┘ └────────┘  │   │
 │  └─────────────────────────────────────────────────────────────────┘   │
 │  ┌─────────────────────────────────────────────────────────────────┐   │
 │  │                      Core Libraries                              │   │
@@ -64,12 +68,10 @@ This document explains the complete architecture of my-career-board, from high-l
 ┌─────────────────────────┐               ┌─────────────────────────────┐
 │       SQLite DB         │               │      Anthropic API          │
 │  ┌───────────────────┐  │               │  ┌───────────────────────┐  │
-│  │  Users            │  │               │  │  Claude LLM           │  │
-│  │  Problems         │  │               │  │  (claude-sonnet-4)    │  │
-│  │  BoardSessions    │  │               │  └───────────────────────┘  │
-│  │  SessionMessages  │  │               └─────────────────────────────┘
-│  └───────────────────┘  │
-│      prisma/dev.db      │
+│  │  40+ Models       │  │               │  │  Claude LLM           │  │
+│  │  (Core + Phases)  │  │               │  │  (claude-sonnet-4)    │  │
+│  └───────────────────┘  │               │  └───────────────────────┘  │
+│      prisma/dev.db      │               └─────────────────────────────┘
 └─────────────────────────┘
 ```
 
@@ -104,7 +106,7 @@ This document explains the complete architecture of my-career-board, from high-l
 6. Browser hydrates React components
 ```
 
-### API Request Flow (Board Message)
+### API Request Flow (Board Message with Streaming)
 
 ```
 1. User types message and clicks Send
@@ -128,10 +130,10 @@ This document explains the complete architecture of my-career-board, from high-l
         ├── User message
         │
         ▼
-5. Anthropic API called
+5. Anthropic API called (streaming)
         │
-        ├── messages.create()
-        ├── Waits for response
+        ├── messages.create({ stream: true })
+        ├── SSE streaming to client
         │
         ▼
 6. Response stored in database
@@ -182,7 +184,18 @@ RootLayout (Server)
 │           ├── PortfolioPage (Server)
 │           ├── AuditPage (Client) - Interactive chat
 │           ├── BoardPage (Client) - Interactive chat
-│           └── HistoryPage (Server)
+│           ├── HistoryPage (Server)
+│           └── Feature Pages (Phase 1-5)
+│               ├── Evidence (Client)
+│               ├── Check-ins (Client)
+│               ├── Decisions (Client)
+│               ├── Timeline (Client)
+│               ├── Feedback (Client)
+│               ├── Skills (Client)
+│               ├── Network (Client)
+│               ├── OKRs (Client)
+│               ├── Compensation (Client)
+│               └── Learning (Client)
 ```
 
 ---
@@ -227,7 +240,7 @@ RootLayout (Server)
 └─────────────────────┘
 ```
 
-### Board Meeting Message Flow
+### Board Meeting Message Flow (with Streaming)
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -240,29 +253,29 @@ RootLayout (Server)
 ┌─────────────────────────────────────────────────────────────────────┐
 │  1. Add user message to local state (optimistic update)             │
 │  2. Set isSending = true                                            │
-│  3. POST to /api/board/{sessionId}/message                          │
+│  3. Connect to /api/board/{sessionId}/stream (SSE)                  │
 └─────────────────────────────────────────────────────────────────────┘
                                     │
-                                    │ API processes
+                                    │ Streaming response
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────┐
 │  Server:                                                             │
 │  1. Verify auth                                                      │
 │  2. Load session + messages + portfolio                              │
 │  3. Build orchestrator state                                         │
-│  4. Call Anthropic API with full context                             │
-│  5. Store user message + director response                           │
-│  6. Return { response, director, currentPhase }                      │
+│  4. Call Anthropic API with streaming                                │
+│  5. Stream chunks to client via SSE                                  │
+│  6. Store complete response in database                              │
 └─────────────────────────────────────────────────────────────────────┘
                                     │
-                                    │ Response received
+                                    │ Stream chunks received
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────┐
 │  Client:                                                             │
-│  1. Add director message to local state                              │
+│  1. Append chunks to director message in real-time                   │
 │  2. Update currentPhase if changed                                   │
-│  3. Set isSending = false                                            │
-│  4. Scroll to bottom                                                 │
+│  3. Set isSending = false on complete                                │
+│  4. Auto-scroll to follow text                                       │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -362,12 +375,13 @@ generateBoardResponse(state, userMessage, portfolio)
         │
         ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│  4. Call Anthropic API                                              │
+│  4. Call Anthropic API (with streaming)                             │
 ├─────────────────────────────────────────────────────────────────────┤
 │  client.messages.create({                                           │
 │    model: 'claude-sonnet-4-20250514',                               │
 │    system: director.systemPrompt,                                   │
-│    messages: conversationHistory + contextPrompt + userMessage      │
+│    messages: conversationHistory + contextPrompt + userMessage,     │
+│    stream: true                                                     │
 │  })                                                                 │
 └─────────────────────────────────────────────────────────────────────┘
         │
@@ -385,13 +399,14 @@ generateBoardResponse(state, userMessage, portfolio)
 
 ## Authentication Architecture
 
-### NextAuth Flow
+### NextAuth Flow (Credentials + OAuth)
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
 │                       Login Flow                                  │
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                   │
+│  Option A: Credentials Login                                      │
 │  1. User submits login form                                       │
 │         │                                                         │
 │         ▼                                                         │
@@ -403,6 +418,20 @@ generateBoardResponse(state, userMessage, portfolio)
 │         ├── Find user by email in database                        │
 │         ├── Compare password hash with bcrypt                     │
 │         ├── Return user object or null                            │
+│                                                                   │
+│  Option B: OAuth Login (Google/GitHub)                            │
+│  1. User clicks "Sign in with Google/GitHub"                      │
+│         │                                                         │
+│         ▼                                                         │
+│  2. Redirect to OAuth provider                                    │
+│         │                                                         │
+│         ▼                                                         │
+│  3. User authorizes, redirects back                               │
+│         │                                                         │
+│         ▼                                                         │
+│  4. Account linked/created in database                            │
+│                                                                   │
+│  Both paths:                                                      │
 │         │                                                         │
 │         ▼                                                         │
 │  4. If authorized:                                                │
@@ -462,58 +491,245 @@ const userId = session?.user?.id
 
 ## Database Schema
 
-### Entity Relationship Diagram
+### Entity Relationship Overview (40+ Models)
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                           User                                   │
-├─────────────────────────────────────────────────────────────────┤
-│  id          String    @id @default(cuid())                     │
-│  email       String    @unique                                   │
-│  password    String                                              │
-│  name        String?                                             │
-│  avatarUrl   String?                                             │
-│  settings    String?   (JSON as string)                          │
-│  createdAt   DateTime                                            │
-│  updatedAt   DateTime                                            │
-├─────────────────────────────────────────────────────────────────┤
-│  problems       Problem[]                                        │
-│  boardSessions  BoardSession[]                                   │
-└─────────────────────────────────────────────────────────────────┘
-           │                              │
-           │ 1:N                          │ 1:N
-           ▼                              ▼
-┌─────────────────────────┐    ┌─────────────────────────────────┐
-│        Problem          │    │         BoardSession            │
-├─────────────────────────┤    ├─────────────────────────────────┤
-│  id                     │    │  id                             │
-│  userId                 │    │  userId                         │
-│  name                   │    │  sessionType                    │
-│  whatBreaks             │    │  quarter                        │
-│  classification         │    │  status                         │
-│  classificationReasoning│    │  currentPhase                   │
-│  timeAllocation         │    │  startedAt                      │
-│  createdAt              │    │  completedAt                    │
-│  updatedAt              │    ├─────────────────────────────────┤
-├─────────────────────────┤    │  messages  SessionMessage[]     │
-│  user  User             │    │  user      User                 │
-└─────────────────────────┘    └─────────────────────────────────┘
-                                          │
-                                          │ 1:N
-                                          ▼
-                               ┌─────────────────────────────────┐
-                               │       SessionMessage            │
-                               ├─────────────────────────────────┤
-                               │  id                             │
-                               │  sessionId                      │
-                               │  speaker     (user/director id) │
-                               │  content                        │
-                               │  messageType                    │
-                               │  metadata    (JSON string)      │
-                               │  createdAt                      │
-                               ├─────────────────────────────────┤
-                               │  session  BoardSession          │
-                               └─────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────┐
+│                              User (Central)                              │
+├─────────────────────────────────────────────────────────────────────────┤
+│  id, email, password, name, avatarUrl, settings, timezone               │
+│  notificationPreferences, notificationEmail, createdAt, updatedAt       │
+└───────────────────────────────────┬─────────────────────────────────────┘
+                                    │
+        ┌───────────────────────────┼───────────────────────────┐
+        │                           │                           │
+        ▼                           ▼                           ▼
+┌───────────────┐          ┌───────────────┐          ┌───────────────┐
+│    Problem    │          │ BoardSession  │          │      Bet      │
+│  (Portfolio)  │          │  (Meetings)   │          │  (Tracking)   │
+└───────────────┘          └───────┬───────┘          └───────────────┘
+                                   │
+                                   ▼
+                           ┌───────────────┐
+                           │SessionMessage │
+                           └───────────────┘
+```
+
+### Core Models
+
+| Model | Purpose | Key Fields |
+|-------|---------|------------|
+| User | User accounts | email, password, settings, timezone |
+| Problem | Career problems portfolio | name, whatBreaks, classification, timeAllocation |
+| BoardRole | AI director configurations | roleType, focusArea, systemPrompt |
+| BoardSession | Meeting sessions | sessionType, quarter, status, currentPhase |
+| SessionMessage | Chat messages | speaker, content, messageType, metadata |
+| QuarterlyReport | Meeting summaries | bets, avoidedDecision, commitments |
+| Bet | Falsifiable commitments | content, deadline, outcome, evidence |
+
+### Phase 1: Evidence & Check-ins
+
+| Model | Purpose | Key Fields |
+|-------|---------|------------|
+| Evidence | Accomplishments vault | title, type, source, impact, date |
+| EvidenceAttachment | File uploads | filename, fileType, url, size |
+| EvidenceProblemLink | Link to problems | evidenceId, problemId |
+| MicroCheckin | Daily reflections | promptId, response, mood |
+| CheckinPrompt | Question templates | category, question, frequency |
+| CheckinStreak | Streak tracking | currentStreak, longestStreak |
+
+### Phase 2: Decisions & Timeline
+
+| Model | Purpose | Key Fields |
+|-------|---------|------------|
+| Decision | Decision tracking | title, options, prediction, confidence |
+| DecisionOutcome | Actual outcomes | actualOutcome, accuracy, lessonsLearned |
+| DecisionTag | Categorization | decisionId, tag |
+| TimelineEvent | Career events | type, title, date, importance |
+| CareerPhase | Career chapters | title, startDate, endDate, color |
+| InflectionPoint | Key moments | impact, beforeState, afterState |
+
+### Phase 3: Feedback & Skills
+
+| Model | Purpose | Key Fields |
+|-------|---------|------------|
+| FeedbackRequest | 360 requests | title, anonymous, status, expiresAt |
+| FeedbackQuestion | Survey questions | question, category, type |
+| FeedbackRecipient | Invited reviewers | email, relationship, token |
+| FeedbackResponse | Submitted feedback | respondentId, relationship |
+| SelfAssessment | Self-ratings | category, area, rating |
+| Skill | User skills | name, proficiency, targetLevel |
+| SkillGap | Identified gaps | currentLevel, requiredLevel, priority |
+| SkillGoal | Learning goals | targetLevel, deadline, progress |
+| MarketSkillDemand | Market data | demandLevel, growthTrend, salaryImpact |
+
+### Phase 4: Network & OKRs
+
+| Model | Purpose | Key Fields |
+|-------|---------|------------|
+| Contact | Network contacts | name, company, relationship, strength |
+| Interaction | Contact log | type, date, summary, sentiment |
+| NetworkingGoal | Networking goals | targetCount, category, deadline |
+| OKRPeriod | OKR timeframes | name, type, startDate, endDate |
+| Objective | Objectives | title, category, priority, progress |
+| KeyResult | Key results | title, metricType, targetValue, currentValue |
+| KeyResultCheckIn | Progress updates | value, previousValue, notes |
+
+### Phase 5: Compensation & Learning
+
+| Model | Purpose | Key Fields |
+|-------|---------|------------|
+| CompensationRecord | Salary/bonus history | type, amount, effectiveDate |
+| EquityGrant | Stock grants | grantType, totalShares, vestingSchedule |
+| EquityVesting | Vesting events | vestDate, shares, vested |
+| CompensationBenchmark | Market data | role, level, percentile50 |
+| LearningResource | Courses/books | title, type, provider, progress |
+| Certification | Certifications | name, issuer, earnedAt, expiresAt |
+| LearningGoal | Learning objectives | title, targetDate, progress |
+
+### Infrastructure Models
+
+| Model | Purpose | Key Fields |
+|-------|---------|------------|
+| Account | OAuth accounts | provider, providerAccountId, tokens |
+| CalendarEvent | Scheduled events | title, type, startTime, reminders |
+| Reminder | Notification queue | type, scheduledFor, sent |
+| UserContext | Uploaded context | type, name, rawText, summary |
+| Team | Accountability groups | name, description |
+| TeamMember | Group membership | role, joinedAt |
+| TeamInvite | Pending invites | email, status |
+| PeerFeedback | Team feedback | type, content |
+
+---
+
+## Feature Modules
+
+### Phase 1: Evidence Vault & Micro Check-ins
+
+```
+Evidence Vault                              Micro Check-ins
+├── /api/evidence                          ├── /api/checkins
+│   ├── GET    - List evidence             │   ├── GET    - List check-ins
+│   └── POST   - Add evidence              │   └── POST   - Submit check-in
+├── /api/evidence/[id]                     ├── /api/checkins/today
+│   ├── GET    - Get one                   │   └── GET    - Today's prompts
+│   ├── PUT    - Update                    ├── /api/checkins/streak
+│   └── DELETE - Remove                    │   └── GET    - Streak stats
+└── /api/evidence/summary                  └── /api/checkins/insights
+    └── GET    - Analytics                     └── GET    - Patterns
+
+Components:                                 Components:
+├── EvidenceList                           ├── CheckinCard
+├── EvidenceForm                           ├── StreakDisplay
+├── EvidenceDetail                         ├── MoodTracker
+└── AttachmentUpload                       └── InsightsChart
+```
+
+### Phase 2: Decision Journal & Career Timeline
+
+```
+Decision Journal                           Career Timeline
+├── /api/decisions                         ├── /api/timeline
+│   ├── GET    - List decisions            │   ├── GET    - Events list
+│   └── POST   - Log decision              │   └── POST   - Add event
+├── /api/decisions/[id]                    ├── /api/timeline/[id]
+│   ├── GET    - Get one                   │   ├── GET    - Get event
+│   ├── PUT    - Update                    │   └── PUT    - Update
+│   └── DELETE - Remove                    ├── /api/timeline/full
+├── /api/decisions/[id]/outcome            │   └── GET    - Full timeline
+│   └── POST   - Record outcome            └── /api/timeline/inflection-points
+├── /api/decisions/review                      └── POST   - Mark inflection
+│   └── GET    - Due for review
+└── /api/decisions/analytics               Components:
+    └── GET    - Accuracy stats            ├── TimelineView
+                                           ├── EventCard
+Components:                                ├── PhaseEditor
+├── DecisionForm                           └── InflectionMarker
+├── DecisionList
+├── OutcomeRecorder
+└── AccuracyChart
+```
+
+### Phase 3: 360° Feedback & Skills Gap
+
+```
+360° Feedback                              Skills Gap Analyzer
+├── /api/feedback                          ├── /api/skills
+│   ├── GET    - List requests             │   ├── GET    - List skills
+│   └── POST   - Create request            │   └── POST   - Add skill
+├── /api/feedback/[id]                     ├── /api/skills/[id]
+│   └── GET    - Request details           │   ├── PUT    - Update
+├── /api/feedback/[id]/results             │   └── DELETE - Remove
+│   └── GET    - Aggregated results        ├── /api/skills/analyze
+├── /api/feedback/respond                  │   └── POST   - Run analysis
+│   └── POST   - Submit feedback           ├── /api/skills/gaps
+└── /api/feedback/self-assessment          │   └── GET    - Gap report
+    ├── GET    - Get self-ratings          ├── /api/skills/goals
+    └── POST   - Submit ratings            │   ├── GET/POST - Goals
+                                           └── /api/skills/analytics
+Components:                                    └── GET    - Insights
+├── FeedbackRequestForm
+├── FeedbackSurvey                         Components:
+├── ResultsAggregation                     ├── SkillsMatrix
+├── BlindSpotAnalysis                      ├── GapChart
+└── SelfAssessmentForm                     ├── MarketDemandView
+                                           └── GoalTracker
+```
+
+### Phase 4: Mentor Network & Career OKRs
+
+```
+Mentor Network                             Career OKRs
+├── /api/network/contacts                  ├── /api/okrs/periods
+│   ├── GET    - List contacts             │   ├── GET    - List periods
+│   └── POST   - Add contact               │   └── POST   - Create period
+├── /api/network/contacts/[id]             ├── /api/okrs/periods/[id]
+│   ├── PUT    - Update                    │   ├── PUT    - Update
+│   └── DELETE - Remove                    │   └── DELETE - Remove
+├── /api/network/interactions              ├── /api/okrs/objectives
+│   ├── GET    - List interactions         │   ├── GET    - List objectives
+│   └── POST   - Log interaction           │   └── POST   - Create
+├── /api/network/follow-ups                ├── /api/okrs/key-results
+│   └── GET    - Due follow-ups            │   ├── GET/POST - Key results
+├── /api/network/goals                     ├── /api/okrs/key-results/[id]
+│   └── GET/POST - Network goals           │   └── PUT    - Update progress
+└── /api/network/analytics                 └── /api/okrs/analytics
+    └── GET    - Network health                └── GET    - OKR insights
+
+Components:                                Components:
+├── ContactList                            ├── PeriodSelector
+├── ContactDetail                          ├── ObjectiveCard
+├── InteractionLog                         ├── KeyResultProgress
+├── RelationshipMap                        └── OKRDashboard
+└── FollowUpReminders
+```
+
+### Phase 5: Compensation & Learning
+
+```
+Compensation Tracker                       Learning Path
+├── /api/compensation/records              ├── /api/learning/resources
+│   ├── GET    - History                   │   ├── GET    - List resources
+│   └── POST   - Add record                │   └── POST   - Add resource
+├── /api/compensation/records/[id]         ├── /api/learning/resources/[id]
+│   ├── PUT    - Update                    │   ├── PUT    - Update progress
+│   └── DELETE - Remove                    │   └── DELETE - Remove
+├── /api/compensation/equity               ├── /api/learning/certifications
+│   ├── GET    - List grants               │   ├── GET    - List certs
+│   └── POST   - Add grant                 │   └── POST   - Add cert
+├── /api/compensation/equity/[id]          ├── /api/learning/certifications/[id]
+│   └── PUT    - Update                    │   └── PUT    - Update
+├── /api/compensation/vestings             ├── /api/learning/goals
+│   └── GET    - Vesting schedule          │   └── GET/POST - Goals
+└── /api/compensation/analytics            └── /api/learning/analytics
+    └── GET    - Total comp                    └── GET    - Learning stats
+
+Components:                                Components:
+├── CompensationHistory                    ├── ResourceList
+├── EquityGrants                           ├── CertificationTracker
+├── VestingSchedule                        ├── LearningGoals
+├── BenchmarkComparison                    ├── ProgressChart
+└── TotalCompChart                         └── ExpiryAlerts
 ```
 
 ---
@@ -527,107 +743,94 @@ my-career-board/
 ├── src/
 │   ├── app/                              # Next.js App Router
 │   │   ├── (auth)/                       # Auth route group
-│   │   │   ├── login/
-│   │   │   │   └── page.tsx              # Login page UI
-│   │   │   └── signup/
-│   │   │       └── page.tsx              # Signup page UI
+│   │   │   ├── login/page.tsx
+│   │   │   └── signup/page.tsx
 │   │   │
 │   │   ├── (dashboard)/                  # Protected route group
-│   │   │   ├── layout.tsx                # Dashboard layout wrapper
-│   │   │   ├── dashboard/
-│   │   │   │   └── page.tsx              # Main dashboard (server)
-│   │   │   ├── audit/
-│   │   │   │   └── page.tsx              # Audit chat (client)
+│   │   │   ├── layout.tsx
+│   │   │   ├── dashboard/page.tsx
+│   │   │   ├── audit/page.tsx
 │   │   │   ├── board/
-│   │   │   │   ├── page.tsx              # Board selection (server)
-│   │   │   │   └── [sessionId]/
-│   │   │   │       └── page.tsx          # Board chat (client)
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── [sessionId]/page.tsx
 │   │   │   ├── portfolio/
-│   │   │   │   ├── page.tsx              # Portfolio view (server)
-│   │   │   │   └── setup/
-│   │   │   │       └── page.tsx          # Setup wizard (client)
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── setup/page.tsx
 │   │   │   ├── history/
-│   │   │   │   ├── page.tsx              # Session list (server)
-│   │   │   │   └── [sessionId]/
-│   │   │   │       └── page.tsx          # Session detail (server)
-│   │   │   └── settings/
-│   │   │       └── page.tsx              # Settings page (server)
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── [sessionId]/page.tsx
+│   │   │   └── settings/page.tsx
 │   │   │
-│   │   ├── api/                          # API Routes
-│   │   │   ├── auth/
-│   │   │   │   ├── [...nextauth]/
-│   │   │   │   │   └── route.ts          # NextAuth handler
-│   │   │   │   └── signup/
-│   │   │   │       └── route.ts          # User registration
-│   │   │   ├── portfolio/
-│   │   │   │   ├── route.ts              # GET portfolio
-│   │   │   │   └── problems/
-│   │   │   │       └── route.ts          # POST new problem
-│   │   │   ├── board/
-│   │   │   │   ├── route.ts              # POST create session
-│   │   │   │   └── [sessionId]/
-│   │   │   │       └── message/
-│   │   │   │           └── route.ts      # POST send message
-│   │   │   ├── sessions/
-│   │   │   │   └── [sessionId]/
-│   │   │   │       └── route.ts          # GET session data
-│   │   │   └── audit/
-│   │   │       ├── route.ts              # POST create audit
-│   │   │       └── [sessionId]/
-│   │   │           └── message/
-│   │   │               └── route.ts      # POST audit message
+│   │   ├── api/                          # API Routes (20+ modules)
+│   │   │   ├── auth/                     # Authentication
+│   │   │   ├── analytics/                # Analytics & insights
+│   │   │   ├── bets/                     # Bet tracking
+│   │   │   ├── board/                    # Board sessions
+│   │   │   ├── calendar/                 # Calendar events
+│   │   │   ├── checkins/                 # Micro check-ins
+│   │   │   ├── compensation/             # Comp tracking
+│   │   │   ├── context/                  # User context
+│   │   │   ├── cron/                     # Scheduled jobs
+│   │   │   ├── decisions/                # Decision journal
+│   │   │   ├── evidence/                 # Evidence vault
+│   │   │   ├── export/                   # PDF/CSV export
+│   │   │   ├── feedback/                 # 360 feedback
+│   │   │   ├── learning/                 # Learning path
+│   │   │   ├── network/                  # Mentor network
+│   │   │   ├── notifications/            # Notification prefs
+│   │   │   ├── oauth/                    # OAuth providers
+│   │   │   ├── okrs/                     # Career OKRs
+│   │   │   ├── portfolio/                # Problem portfolio
+│   │   │   ├── sessions/                 # Audit sessions
+│   │   │   ├── skills/                   # Skills gap
+│   │   │   ├── teams/                    # Team collaboration
+│   │   │   └── timeline/                 # Career timeline
 │   │   │
 │   │   ├── layout.tsx                    # Root layout
 │   │   ├── page.tsx                      # Landing page
 │   │   └── globals.css                   # Global styles
 │   │
 │   ├── components/
-│   │   ├── ui/                           # shadcn/ui (don't edit)
-│   │   │   ├── button.tsx
-│   │   │   ├── card.tsx
-│   │   │   ├── input.tsx
-│   │   │   └── ...
-│   │   ├── audit/
-│   │   │   ├── AuditChat.tsx             # Audit chat interface
-│   │   │   └── SpecificityGate.tsx       # Gate challenge UI
-│   │   └── shared/
-│   │       └── LoadingSpinner.tsx        # Shared loading component
+│   │   ├── ui/                           # shadcn/ui components
+│   │   ├── audit/                        # Audit components
+│   │   ├── bets/                         # Bet tracking
+│   │   ├── charts/                       # Data visualization
+│   │   ├── compensation/                 # Compensation UI
+│   │   ├── feedback360/                  # 360 feedback UI
+│   │   ├── learning/                     # Learning path UI
+│   │   ├── mobile/                       # Mobile responsive
+│   │   └── shared/                       # Shared components
 │   │
 │   ├── lib/
-│   │   ├── audit/
-│   │   │   └── questions.ts              # Audit question definitions
-│   │   ├── board/
-│   │   │   └── phases.ts                 # Meeting phases (CLIENT-SAFE)
-│   │   ├── directors/
-│   │   │   └── personas.ts               # Director definitions
-│   │   ├── insights/
-│   │   │   └── patterns.ts               # Pattern detection logic
+│   │   ├── audit/questions.ts            # Audit questions
+│   │   ├── board/phases.ts               # Meeting phases (CLIENT-SAFE)
+│   │   ├── directors/personas.ts         # Director definitions
+│   │   ├── insights/patterns.ts          # Pattern detection
 │   │   ├── llm/
-│   │   │   ├── providers/
-│   │   │   │   └── anthropic.ts          # Claude API client
+│   │   │   ├── providers/anthropic.ts    # Claude API client
 │   │   │   └── orchestrator.ts           # Board orchestration (SERVER)
-│   │   ├── prisma/
-│   │   │   └── client.ts                 # Prisma singleton
+│   │   ├── prisma/client.ts              # Prisma singleton
+│   │   ├── streaming/                    # Real-time streaming
 │   │   └── utils.ts                      # Utility functions
+│   │
+│   ├── __tests__/                        # Test suites (897 tests)
+│   │   ├── api/                          # API route tests
+│   │   └── components/                   # Component tests
 │   │
 │   ├── auth.ts                           # NextAuth configuration
 │   └── middleware.ts                     # Route protection
 │
 ├── prisma/
-│   ├── schema.prisma                     # Database schema
+│   ├── schema.prisma                     # Database schema (40+ models)
 │   └── dev.db                            # SQLite database
 │
 ├── docs/                                 # Documentation
-│   ├── DEVELOPER_GUIDE.md
-│   ├── USER_GUIDE.md
-│   ├── QUICK_START.md
-│   └── ARCHITECTURE.md
-│
 ├── public/                               # Static assets
 ├── .env.local                            # Environment variables
 ├── package.json                          # Dependencies
 ├── tsconfig.json                         # TypeScript config
 ├── tailwind.config.ts                    # Tailwind config
+├── jest.config.js                        # Jest config
 ├── CLAUDE.md                             # AI assistant context
 └── README.md                             # Project readme
 ```
@@ -644,16 +847,16 @@ my-career-board/
 
 **Implementation:**
 ```typescript
-// ✅ Client component can import
+// Client component can import
 import { BOARD_MEETING_PHASES } from '@/lib/board/phases'
 
-// ❌ Client component CANNOT import
+// Client component CANNOT import
 import { generateBoardResponse } from '@/lib/llm/orchestrator'  // Contains Anthropic
 ```
 
-### 2. SQLite Instead of Supabase
+### 2. SQLite Instead of PostgreSQL
 
-**Decision:** Use SQLite with Prisma instead of Supabase
+**Decision:** Use SQLite with Prisma instead of external database
 
 **Why:**
 - Simpler setup (no external account needed)
@@ -661,7 +864,7 @@ import { generateBoardResponse } from '@/lib/llm/orchestrator'  // Contains Anth
 - Faster for development
 - Easy to reset
 
-**Trade-off:** Not suitable for multi-user production without migration to PostgreSQL.
+**Trade-off:** Not suitable for multi-user production without migration.
 
 ### 3. JWT Sessions Instead of Database Sessions
 
@@ -674,63 +877,50 @@ import { generateBoardResponse } from '@/lib/llm/orchestrator'  // Contains Anth
 
 **Trade-off:** Cannot revoke sessions (user has to wait for expiration).
 
-### 4. Optimistic Updates for Chat
+### 4. Streaming Responses
 
-**Decision:** Add user message to UI before API confirms
-
-**Why:**
-- Better UX - message appears instantly
-- AI response takes 2-5 seconds
-- User sees their message immediately
-
-**Implementation:**
-```typescript
-// 1. Add to local state immediately
-setMessages(prev => [...prev, userMessage])
-
-// 2. Send to API
-const response = await fetch('/api/board/.../message', ...)
-
-// 3. Add AI response when received
-setMessages(prev => [...prev, aiMessage])
-```
-
-### 5. Director Interjection System
-
-**Decision:** Allow any director to interject based on triggers
+**Decision:** Implement SSE streaming for AI responses
 
 **Why:**
-- Makes conversation more dynamic
-- Prevents gaming one director
-- Simulates real board dynamics
+- Better UX - see text as it's generated
+- Feels more responsive
+- Matches modern AI chat experiences
 
-**Implementation:**
-```typescript
-// If user says "I promise...", Accountability Hawk might interject
-if (userMessage.includes('promise')) {
-  if (Math.random() > 0.6) {  // 40% chance
-    respondingDirector = accountability_hawk
-  }
-}
-```
+**Implementation:** `/api/board/[sessionId]/stream` endpoint with Server-Sent Events.
+
+### 5. Test-Driven Development
+
+**Decision:** Use TDD (Red-Green-Refactor) for all features
+
+**Why:**
+- Ensures comprehensive coverage (897 tests)
+- Catches regressions early
+- Documents expected behavior
+- Enables confident refactoring
+
+### 6. Feature Module Pattern
+
+**Decision:** Organize code by feature domain, not by type
+
+**Why:**
+- Related code stays together
+- Easier to understand feature scope
+- Independent deployment possible
+- Clear ownership boundaries
 
 ---
 
 ## Extending the System
 
-### Adding a New Feature: Goals Tracking
+### Adding a New Feature Module
 
-1. **Add database model:**
+1. **Add database models:**
    ```prisma
-   model Goal {
-     id          String    @id @default(cuid())
-     userId      String
-     title       String
-     description String?
-     targetDate  DateTime?
-     completed   Boolean   @default(false)
-     createdAt   DateTime  @default(now())
-
+   // prisma/schema.prisma
+   model NewFeature {
+     id        String   @id @default(cuid())
+     userId    String
+     // ... fields
      user User @relation(fields: [userId], references: [id])
    }
    ```
@@ -743,83 +933,48 @@ if (userMessage.includes('promise')) {
 
 3. **Create API routes:**
    ```
-   src/app/api/goals/
+   src/app/api/new-feature/
    ├── route.ts           # GET list, POST create
-   └── [goalId]/
+   └── [id]/
        └── route.ts       # GET one, PUT update, DELETE
    ```
 
-4. **Create pages:**
+4. **Write tests first (TDD):**
    ```
-   src/app/(dashboard)/goals/
-   ├── page.tsx           # List goals
-   └── new/
-       └── page.tsx       # Create goal form
+   src/__tests__/api/new-feature/
+   └── route.test.ts
    ```
 
-5. **Add navigation link in dashboard layout**
+5. **Create components:**
+   ```
+   src/components/new-feature/
+   ├── FeatureList.tsx
+   ├── FeatureForm.tsx
+   └── index.ts
+   ```
 
-6. **Integrate with board meetings:**
-   - Include goals in portfolio context
-   - Add goal progress to Market Check phase
+6. **Add to navigation**
+
+7. **Update documentation**
 
 ### Adding a New Director
 
 1. **Edit `src/lib/directors/personas.ts`:**
    ```typescript
    {
-     id: 'risk_officer',
-     name: 'The Risk Officer',
-     title: 'Chief Risk Officer',
-     avatar: '⚠️',
-     color: 'orange',
-     systemPrompt: `You are The Risk Officer. You identify and quantify
-       career risks. You ask about worst-case scenarios, failure modes,
-       and mitigation strategies. You don't accept vague risk assessments.`,
-     interjectionTriggers: ['risk', 'dangerous', 'might fail', 'worried'],
+     id: 'new_director',
+     name: 'The New Director',
+     title: 'Chief Something Officer',
+     avatar: '...',
+     color: 'color',
+     systemPrompt: `You are The New Director. You...`,
+     interjectionTriggers: ['trigger', 'words'],
    }
    ```
 
-2. **Optionally add to phases in `src/lib/board/phases.ts`:**
-   ```typescript
-   {
-     id: 6,
-     name: 'Risk Assessment',
-     description: 'Evaluate career risks',
-     leadDirector: 'risk_officer',
-     questions: ['What is the biggest risk to your career?'],
-   }
-   ```
+2. **Optionally add to phases in `src/lib/board/phases.ts`**
 
 3. **No other changes needed** - orchestrator automatically uses new director.
-
-### Adding Email Notifications
-
-1. **Install Resend:**
-   ```bash
-   npm install resend
-   ```
-
-2. **Add API key to `.env.local`:**
-   ```
-   RESEND_API_KEY=re_...
-   ```
-
-3. **Create email service:**
-   ```typescript
-   // src/lib/email/client.ts
-   import { Resend } from 'resend'
-   export const resend = new Resend(process.env.RESEND_API_KEY)
-   ```
-
-4. **Create email templates:**
-   ```
-   src/lib/email/templates/
-   ├── quarterly-reminder.tsx
-   └── session-complete.tsx
-   ```
-
-5. **Add cron job for reminders (using Vercel Cron or similar)**
 
 ---
 
@@ -828,3 +983,4 @@ This architecture is designed to be:
 - **Extensible** - Easy to add features
 - **Maintainable** - Well-organized file structure
 - **Secure** - API keys never exposed to client
+- **Testable** - 897 tests ensure reliability
