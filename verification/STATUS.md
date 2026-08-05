@@ -4,6 +4,8 @@
 (`az9713/my-career-board`, local `C:\Users\simon\Downloads\projects\my-career-board`).
 **Spec:** `verification-environment-plan.html` — kept **outside** this repo, not
 git-tracked anywhere (local: `C:\Users\simon\Downloads\ai_coding_future_ray_amjad\`).
+**Origin:** Ray Amjad, ["This Is Where AI Coding Goes Next"](https://www.youtube.com/watch?v=_eCtUVds3wA)
+— the verification environment is the durable asset, not the generated code.
 **Code:** commit `f12faf1`, docs commit `4fc4a42`, both pushed to `origin/main`.
 **Date of this document:** 2026-08-04. **Phases complete:** 0 and 1 of 3.
 

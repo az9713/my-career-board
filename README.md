@@ -293,9 +293,11 @@ MIT — see LICENSE.
 [video](https://www.youtube.com/watch?v=BaC5FEN2e4Y) ·
 [substack](https://natesnewsletter.substack.com/p/the-rarest-thing-in-work-why-360).
 
-**The verification environment** derives from a Ray Amjad talk on the future of AI
-coding, a GPT-5.6 summary of it, and a Ramp engineer's account of running agents as
-users against their own product. The design decisions — and the failures — are this
-repo's own.
+**The verification environment** derives from Ray Amjad's
+["This Is Where AI Coding Goes Next"](https://www.youtube.com/watch?v=_eCtUVds3wA) —
+the argument that the durable asset is the verification environment, not the code the
+agent writes — together with a GPT-5.6 summary of that talk and a Ramp engineer's
+account of running agents as users against their own product. The design decisions —
+and the failures — are this repo's own.
 
 Built with [Claude Code](https://claude.ai/claude-code).
