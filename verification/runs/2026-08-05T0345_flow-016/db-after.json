@@ -1,0 +1,187 @@
+{
+  "counts": {
+    "Account": 0,
+    "Bet": 0,
+    "BoardRole": 5,
+    "BoardSession": 1,
+    "CalendarEvent": 0,
+    "CareerPhase": 0,
+    "Certification": 0,
+    "CheckinPrompt": 0,
+    "CheckinStreak": 0,
+    "CompensationBenchmark": 0,
+    "CompensationRecord": 0,
+    "Contact": 0,
+    "Decision": 0,
+    "DecisionOutcome": 0,
+    "DecisionTag": 0,
+    "EquityGrant": 0,
+    "EquityVesting": 0,
+    "Evidence": 0,
+    "EvidenceAttachment": 0,
+    "EvidenceProblemLink": 0,
+    "FeedbackQuestion": 0,
+    "FeedbackQuestionResponse": 0,
+    "FeedbackRecipient": 0,
+    "FeedbackRequest": 0,
+    "FeedbackResponse": 0,
+    "InflectionPoint": 0,
+    "Interaction": 0,
+    "KeyResult": 0,
+    "KeyResultCheckIn": 0,
+    "LearningGoal": 0,
+    "LearningResource": 0,
+    "MarketSkillDemand": 0,
+    "MicroCheckin": 0,
+    "NetworkingGoal": 0,
+    "OKRPeriod": 0,
+    "Objective": 0,
+    "PeerFeedback": 0,
+    "Problem": 3,
+    "QuarterlyReport": 0,
+    "Reminder": 0,
+    "SelfAssessment": 0,
+    "SessionMessage": 1,
+    "Skill": 0,
+    "SkillGap": 0,
+    "SkillGoal": 0,
+    "SkillMarketDemand": 0,
+    "Team": 0,
+    "TeamInvite": 0,
+    "TeamMember": 0,
+    "TimelineEvent": 0,
+    "User": 1,
+    "UserContext": 0
+  },
+  "rows": {
+    "BoardSession": [
+      {
+        "id": "cmsfjp0hx000112k4mgirbvk9",
+        "userId": "usr_fixture_0001",
+        "sessionType": "quick_audit",
+        "quarter": null,
+        "status": "in_progress",
+        "currentPhase": 1,
+        "startedAt": 1785901587909,
+        "completedAt": null
+      }
+    ],
+    "SessionMessage": [
+      {
+        "id": "cmsfjpncw000312k4a1h9e9gr",
+        "sessionId": "cmsfjp0hx000112k4mgirbvk9",
+        "speaker": "user",
+        "content": "I have been avoiding making some changes around here",
+        "messageType": "answer",
+        "metadata": "{\"questionId\":\"avoided_decision\",\"gateResult\":\"passed\",\"attemptCount\":1}",
+        "createdAt": 1785901617537
+      }
+    ],
+    "Problem": [
+      {
+        "id": "prb_fixture_0001",
+        "userId": "usr_fixture_0001",
+        "name": "Onboarding drop-off",
+        "whatBreaks": "New users stall at step 3 of setup",
+        "scarcitySignals": "[]",
+        "aiCheaper": null,
+        "errorCost": null,
+        "trustRequired": null,
+        "classification": "appreciating",
+        "classificationReasoning": "Seeded fixture problem classified as appreciating.",
+        "timeAllocation": null,
+        "createdAt": 1767225600000,
+        "updatedAt": 1767225600000
+      },
+      {
+        "id": "prb_fixture_0002",
+        "userId": "usr_fixture_0001",
+        "name": "Manual invoice reconciliation",
+        "whatBreaks": "Finance reconciles invoices by hand each month",
+        "scarcitySignals": "[]",
+        "aiCheaper": null,
+        "errorCost": null,
+        "trustRequired": null,
+        "classification": "depreciating",
+        "classificationReasoning": "Seeded fixture problem classified as depreciating.",
+        "timeAllocation": null,
+        "createdAt": 1767225600000,
+        "updatedAt": 1767225600000
+      },
+      {
+        "id": "prb_fixture_0003",
+        "userId": "usr_fixture_0001",
+        "name": "Incident triage rota",
+        "whatBreaks": "Nobody owns first-response for pager alerts",
+        "scarcitySignals": "[]",
+        "aiCheaper": null,
+        "errorCost": null,
+        "trustRequired": null,
+        "classification": "stable",
+        "classificationReasoning": "Seeded fixture problem classified as stable.",
+        "timeAllocation": null,
+        "createdAt": 1767225600000,
+        "updatedAt": 1767225600000
+      }
+    ],
+    "BoardRole": [
+      {
+        "id": "rol_fixture_0001",
+        "userId": "usr_fixture_0001",
+        "roleType": "operator",
+        "anchoredProblemId": "prb_fixture_0001",
+        "focusArea": "Focus area for the operator",
+        "systemPrompt": null,
+        "generatedAt": 1767225600000
+      },
+      {
+        "id": "rol_fixture_0002",
+        "userId": "usr_fixture_0001",
+        "roleType": "strategist",
+        "anchoredProblemId": "prb_fixture_0002",
+        "focusArea": "Focus area for the strategist",
+        "systemPrompt": null,
+        "generatedAt": 1767225600000
+      },
+      {
+        "id": "rol_fixture_0003",
+        "userId": "usr_fixture_0001",
+        "roleType": "skeptic",
+        "anchoredProblemId": "prb_fixture_0003",
+        "focusArea": "Focus area for the skeptic",
+        "systemPrompt": null,
+        "generatedAt": 1767225600000
+      },
+      {
+        "id": "rol_fixture_0004",
+        "userId": "usr_fixture_0001",
+        "roleType": "connector",
+        "anchoredProblemId": "prb_fixture_0001",
+        "focusArea": "Focus area for the connector",
+        "systemPrompt": null,
+        "generatedAt": 1767225600000
+      },
+      {
+        "id": "rol_fixture_0005",
+        "userId": "usr_fixture_0001",
+        "roleType": "chair",
+        "anchoredProblemId": "prb_fixture_0002",
+        "focusArea": "Focus area for the chair",
+        "systemPrompt": null,
+        "generatedAt": 1767225600000
+      }
+    ]
+  },
+  "diffFromBefore": {
+    "BoardSession": {
+      "before": 0,
+      "after": 1,
+      "delta": 1
+    },
+    "SessionMessage": {
+      "before": 0,
+      "after": 1,
+      "delta": 1
+    }
+  }
+}

@@ -1,0 +1,72 @@
+
+> pcgs@0.1.0 dev
+> next dev
+
+▲ Next.js 16.1.1 (Turbopack)
+- Local:         http://localhost:3116
+- Network:       http://192.168.1.99:3116
+- Environments: .env.local, .env
+
+✓ Starting...
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+✓ Ready in 1859ms
+ GET /login 200 in 3.7s (compile: 3.2s, proxy.ts: 94ms, render: 422ms)
+ GET / 200 in 1749ms (compile: 1152ms, render: 597ms)
+ GET /login 200 in 255ms (compile: 9ms, proxy.ts: 20ms, render: 226ms)
+ GET /api/auth/providers 200 in 4.1s (compile: 4.1s, render: 38ms)
+ GET /api/auth/csrf 200 in 60ms (compile: 49ms, render: 10ms)
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`email`, `main`.`User`.`password`, `main`.`User`.`name`, `main`.`User`.`avatarUrl`, `main`.`User`.`settings`, `main`.`User`.`timezone`, `main`.`User`.`notificationPreferences`, `main`.`User`.`notificationEmail`, `main`.`User`.`createdAt`, `main`.`User`.`updatedAt` FROM `main`.`User` WHERE (`main`.`User`.`email` = ? AND 1=1) LIMIT ? OFFSET ?
+ POST /api/auth/callback/credentials? 200 in 145ms (compile: 4ms, render: 141ms)
+prisma:query SELECT COUNT(*) FROM (SELECT `main`.`Problem`.`id` FROM `main`.`Problem` WHERE `main`.`Problem`.`userId` = ? LIMIT ? OFFSET ?) AS `sub`
+prisma:query SELECT `main`.`BoardSession`.`id`, `main`.`BoardSession`.`userId`, `main`.`BoardSession`.`sessionType`, `main`.`BoardSession`.`quarter`, `main`.`BoardSession`.`status`, `main`.`BoardSession`.`currentPhase`, `main`.`BoardSession`.`startedAt`, `main`.`BoardSession`.`completedAt` FROM `main`.`BoardSession` WHERE `main`.`BoardSession`.`userId` = ? ORDER BY `main`.`BoardSession`.`startedAt` DESC LIMIT ? OFFSET ?
+ GET /dashboard 200 in 3.0s (compile: 2.2s, proxy.ts: 27ms, render: 798ms)
+ GET /audit 200 in 2.3s (compile: 1772ms, proxy.ts: 19ms, render: 470ms)
+prisma:query SELECT 1
+prisma:query INSERT INTO `main`.`BoardSession` (`id`, `userId`, `sessionType`, `status`, `currentPhase`, `startedAt`) VALUES (?,?,?,?,?,?) RETURNING `id` AS `id`, `userId` AS `userId`, `sessionType` AS `sessionType`, `quarter` AS `quarter`, `status` AS `status`, `currentPhase` AS `currentPhase`, `startedAt` AS `startedAt`, `completedAt` AS `completedAt`
+ POST /api/sessions 200 in 1381ms (compile: 1231ms, render: 150ms)
+ GET /audit/cmsfjp0hx000112k4mgirbvk9 200 in 4.9s (compile: 4.6s, proxy.ts: 93ms, render: 260ms)
+prisma:query SELECT `main`.`BoardSession`.`id`, `main`.`BoardSession`.`userId`, `main`.`BoardSession`.`sessionType`, `main`.`BoardSession`.`quarter`, `main`.`BoardSession`.`status`, `main`.`BoardSession`.`currentPhase`, `main`.`BoardSession`.`startedAt`, `main`.`BoardSession`.`completedAt` FROM `main`.`BoardSession` WHERE (`main`.`BoardSession`.`id` = ? AND `main`.`BoardSession`.`userId` = ?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`SessionMessage`.`id`, `main`.`SessionMessage`.`sessionId`, `main`.`SessionMessage`.`speaker`, `main`.`SessionMessage`.`content`, `main`.`SessionMessage`.`messageType`, `main`.`SessionMessage`.`metadata`, `main`.`SessionMessage`.`createdAt` FROM `main`.`SessionMessage` WHERE `main`.`SessionMessage`.`sessionId` IN (?) ORDER BY `main`.`SessionMessage`.`createdAt` ASC LIMIT ? OFFSET ?
+ GET /api/sessions/cmsfjp0hx000112k4mgirbvk9 200 in 2.7s (compile: 2.6s, render: 116ms)
+prisma:query SELECT `main`.`BoardSession`.`id`, `main`.`BoardSession`.`userId`, `main`.`BoardSession`.`sessionType`, `main`.`BoardSession`.`quarter`, `main`.`BoardSession`.`status`, `main`.`BoardSession`.`currentPhase`, `main`.`BoardSession`.`startedAt`, `main`.`BoardSession`.`completedAt` FROM `main`.`BoardSession` WHERE (`main`.`BoardSession`.`id` = ? AND `main`.`BoardSession`.`userId` = ?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`SessionMessage`.`id`, `main`.`SessionMessage`.`sessionId`, `main`.`SessionMessage`.`speaker`, `main`.`SessionMessage`.`content`, `main`.`SessionMessage`.`messageType`, `main`.`SessionMessage`.`metadata`, `main`.`SessionMessage`.`createdAt` FROM `main`.`SessionMessage` WHERE `main`.`SessionMessage`.`sessionId` IN (?) ORDER BY `main`.`SessionMessage`.`createdAt` ASC LIMIT ? OFFSET ?
+ GET /api/sessions/cmsfjp0hx000112k4mgirbvk9 200 in 787ms (compile: 675ms, render: 112ms)
+prisma:query SELECT 1
+prisma:query SELECT `main`.`BoardSession`.`id`, `main`.`BoardSession`.`userId`, `main`.`BoardSession`.`sessionType`, `main`.`BoardSession`.`quarter`, `main`.`BoardSession`.`status`, `main`.`BoardSession`.`currentPhase`, `main`.`BoardSession`.`startedAt`, `main`.`BoardSession`.`completedAt` FROM `main`.`BoardSession` WHERE (`main`.`BoardSession`.`id` = ? AND `main`.`BoardSession`.`userId` = ?) LIMIT ? OFFSET ?
+Anthropic API error: Error: 404 {"type":"error","error":{"type":"not_found_error","message":"model: claude-sonnet-4-20250514"},"request_id":"req_011Cdiv5jwn4SJZ6GBQPADPQ"}
+    at async evaluateSpecificity (src\lib\llm\providers\anthropic.ts:17:21)
+    at async checkSpecificityGate (src\lib\llm\gates.ts:58:44)
+    at async POST (src\app\api\sessions\[id]\answer\route.ts:59:24)
+  15 | ): Promise<GateEvaluationResult> {
+  16 |   try {
+> 17 |     const message = await anthropic.messages.create({
+     |                     ^
+  18 |       model: 'claude-sonnet-4-20250514',
+  19 |       max_tokens: 256,
+  20 |       messages: [ {
+  status: 404,
+  headers: Headers {
+    date: 'Wed, 05 Aug 2026 03:46:57 GMT',
+    'content-type': 'application/json',
+    'transfer-encoding': 'chunked',
+    connection: 'keep-alive',
+    'x-should-retry': 'false',
+    'request-id': 'req_011Cdiv5jwn4SJZ6GBQPADPQ',
+    'strict-transport-security': 'max-age=31536000; includeSubDomains; preload',
+    'anthropic-organization-id': '11fad77e-8310-47a2-9538-92c2f6217997',
+    traceresponse: '00-31a90cb588846c8b58299146af3ad16e-2426fd818c679a95-01',
+    server: 'cloudflare',
+    'content-encoding': 'gzip',
+    vary: 'Accept-Encoding',
+    'server-timing': 'x-originResponse;dur=34',
+    'x-robots-tag': 'none',
+    'content-security-policy': "default-src 'none'; frame-ancestors 'none'",
+    'cf-cache-status': 'DYNAMIC',
+    'cf-ray': 'a262d1558ff04c71-SJC'
+  },
+  requestID: 'req_011Cdiv5jwn4SJZ6GBQPADPQ',
+  error: [Object]
+}
+prisma:query INSERT INTO `main`.`SessionMessage` (`id`, `sessionId`, `speaker`, `content`, `messageType`, `metadata`, `createdAt`) VALUES (?,?,?,?,?,?,?) RETURNING `id` AS `id`, `sessionId` AS `sessionId`, `speaker` AS `speaker`, `content` AS `content`, `messageType` AS `messageType`, `metadata` AS `metadata`, `createdAt` AS `createdAt`
+prisma:query UPDATE `main`.`BoardSession` SET `currentPhase` = ?, `status` = ?, `completedAt` = ? WHERE (`main`.`BoardSession`.`id` = ? AND 1=1) RETURNING `id` AS `id`, `userId` AS `userId`, `sessionType` AS `sessionType`, `quarter` AS `quarter`, `status` AS `status`, `currentPhase` AS `currentPhase`, `startedAt` AS `startedAt`, `completedAt` AS `completedAt`
+ POST /api/sessions/cmsfjp0hx000112k4mgirbvk9/answer 200 in 4.6s (compile: 3.6s, render: 1012ms)

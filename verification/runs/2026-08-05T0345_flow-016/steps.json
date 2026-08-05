@@ -1,0 +1,309 @@
+[
+  {
+    "n": 1,
+    "tool": "goto",
+    "input": {
+      "path": "/"
+    },
+    "urlBefore": "about:blank",
+    "urlAfter": "http://localhost:3116/",
+    "startedAt": "2026-08-05T03:45:48.995Z",
+    "finishedAt": "2026-08-05T03:45:51.433Z",
+    "screenshot": "screenshots/01_goto.png",
+    "domText": "PCGS\nSign In\nGet Started\nYour Career Deserves a Board of Directors\n\nStop drifting. Get the honest, adversarial feedback that executives pay thousands for. AI-powered accountability that holds you to what you said you'd do.\n\nStart Free\nSign In\nThe Problem With Self-Assessment\n\nWe're unreliable narrators of our own careers. We round up successes, round down failures, and tell ourselves we're \"being patient\" when we're really just avoiding hard conversations. Without external accountability, drift accumulates into years of motion without progress.\n\nQuick Audit\n\n15 minutes to surface what you've been avoiding. No commitment required. See if this system can help you.\n\nAI Board Meeting\n\n5 AI directors who challenge you from different angles. No validation, only scrutiny.\n\nPattern Detection\n\nTrack avoided decisions across quarters. Make patterns undeniable. See your real trajectory.\n\nHow It Works\n1\nDefine Your Problem Portfolio\n\nIdentify the 3-5 problems you're actually paid to solve. Classify each as appreciating, depreciating, or stable.\n\n2\nMeet Your Board\n\n5 AI directors are generated based on your portfolio: Accountability Hawk, Market Reality Skeptic, Avoidance Hunter, Strategist, and Devil's Advocate.\n\n3\nQuarterly Board Meeting\n\nPresent your report. Get challenged on receipts, avoided decisions, and comfort work. Leave with falsifiable bets for next quarter.\n\n4\nTrack Over Time\n\nPatterns become undeniable. See which avoided decisions keep recurring. Watch your bet accuracy improve.\n\nMeet Your Board\n\n5 AI directors, each with a specific mandate. They don't validate. They scrutinize.\n\nAccountability Hawk\n\nDemands receipts\n\nMarket Reality\n\nChallenges your valuations\n\nAvoidance Hunter\n\nProbes what you're dodging\n\nStrategist\n\nAsks 5-year questions\n\nDevil's Advocate\n\nArgues against your path\n\nReady to stop drifting?\n\nStart with a 15-minute Quick Audit. No credit card required.\n\nGet Started Free\n\nPersonal Career Governance System\n\nBased on Nate Jones' AI Board of Directors concept",
+    "error": null
+  },
+  {
+    "n": 2,
+    "tool": "snapshot",
+    "input": {},
+    "urlBefore": "http://localhost:3116/",
+    "urlAfter": "http://localhost:3116/",
+    "startedAt": "2026-08-05T03:45:51.475Z",
+    "finishedAt": "2026-08-05T03:45:52.118Z",
+    "screenshot": "screenshots/02_snapshot.png",
+    "domText": "PCGS\nSign In\nGet Started\nYour Career Deserves a Board of Directors\n\nStop drifting. Get the honest, adversarial feedback that executives pay thousands for. AI-powered accountability that holds you to what you said you'd do.\n\nStart Free\nSign In\nThe Problem With Self-Assessment\n\nWe're unreliable narrators of our own careers. We round up successes, round down failures, and tell ourselves we're \"being patient\" when we're really just avoiding hard conversations. Without external accountability, drift accumulates into years of motion without progress.\n\nQuick Audit\n\n15 minutes to surface what you've been avoiding. No commitment required. See if this system can help you.\n\nAI Board Meeting\n\n5 AI directors who challenge you from different angles. No validation, only scrutiny.\n\nPattern Detection\n\nTrack avoided decisions across quarters. Make patterns undeniable. See your real trajectory.\n\nHow It Works\n1\nDefine Your Problem Portfolio\n\nIdentify the 3-5 problems you're actually paid to solve. Classify each as appreciating, depreciating, or stable.\n\n2\nMeet Your Board\n\n5 AI directors are generated based on your portfolio: Accountability Hawk, Market Reality Skeptic, Avoidance Hunter, Strategist, and Devil's Advocate.\n\n3\nQuarterly Board Meeting\n\nPresent your report. Get challenged on receipts, avoided decisions, and comfort work. Leave with falsifiable bets for next quarter.\n\n4\nTrack Over Time\n\nPatterns become undeniable. See which avoided decisions keep recurring. Watch your bet accuracy improve.\n\nMeet Your Board\n\n5 AI directors, each with a specific mandate. They don't validate. They scrutinize.\n\nAccountability Hawk\n\nDemands receipts\n\nMarket Reality\n\nChallenges your valuations\n\nAvoidance Hunter\n\nProbes what you're dodging\n\nStrategist\n\nAsks 5-year questions\n\nDevil's Advocate\n\nArgues against your path\n\nReady to stop drifting?\n\nStart with a 15-minute Quick Audit. No credit card required.\n\nGet Started Free\n\nPersonal Career Governance System\n\nBased on Nate Jones' AI Board of Directors concept",
+    "error": null
+  },
+  {
+    "n": 3,
+    "tool": "goto",
+    "input": {
+      "path": "/login"
+    },
+    "urlBefore": "http://localhost:3116/",
+    "urlAfter": "http://localhost:3116/login",
+    "startedAt": "2026-08-05T03:45:54.091Z",
+    "finishedAt": "2026-08-05T03:45:54.948Z",
+    "screenshot": "screenshots/03_goto.png",
+    "domText": "Welcome Back\nSign in to your career governance board\nEmail\nPassword\nSign In\n\nDon't have an account? Sign up",
+    "error": null
+  },
+  {
+    "n": 4,
+    "tool": "snapshot",
+    "input": {},
+    "urlBefore": "http://localhost:3116/login",
+    "urlAfter": "http://localhost:3116/login",
+    "startedAt": "2026-08-05T03:45:56.650Z",
+    "finishedAt": "2026-08-05T03:45:57.248Z",
+    "screenshot": "screenshots/04_snapshot.png",
+    "domText": "Welcome Back\nSign in to your career governance board\nEmail\nPassword\nSign In\n\nDon't have an account? Sign up",
+    "error": null
+  },
+  {
+    "n": 5,
+    "tool": "fill",
+    "input": {
+      "selector": "input[placeholder=\"you@example.com\"]",
+      "text": "fixture@test.local"
+    },
+    "urlBefore": "http://localhost:3116/login",
+    "urlAfter": "http://localhost:3116/login",
+    "startedAt": "2026-08-05T03:46:00.794Z",
+    "finishedAt": "2026-08-05T03:46:01.420Z",
+    "screenshot": "screenshots/05_fill.png",
+    "domText": "Welcome Back\nSign in to your career governance board\nEmail\nPassword\nSign In\n\nDon't have an account? Sign up",
+    "error": null
+  },
+  {
+    "n": 6,
+    "tool": "fill",
+    "input": {
+      "selector": "input[placeholder=\"Your password\"]",
+      "text": "Fixture123!"
+    },
+    "urlBefore": "http://localhost:3116/login",
+    "urlAfter": "http://localhost:3116/login",
+    "startedAt": "2026-08-05T03:46:03.795Z",
+    "finishedAt": "2026-08-05T03:46:04.438Z",
+    "screenshot": "screenshots/06_fill.png",
+    "domText": "Welcome Back\nSign in to your career governance board\nEmail\nPassword\nSign In\n\nDon't have an account? Sign up",
+    "error": null
+  },
+  {
+    "n": 7,
+    "tool": "click",
+    "input": {
+      "selector": "role=button[name=\"Sign In\"]"
+    },
+    "urlBefore": "http://localhost:3116/login",
+    "urlAfter": "http://localhost:3116/login",
+    "startedAt": "2026-08-05T03:46:06.302Z",
+    "finishedAt": "2026-08-05T03:46:07.064Z",
+    "screenshot": "screenshots/07_click.png",
+    "domText": "Welcome Back\nSign in to your career governance board\nEmail\nPassword\nSigning in...\n\nDon't have an account? Sign up",
+    "error": null
+  },
+  {
+    "n": 8,
+    "tool": "wait",
+    "input": {
+      "ms": 2000
+    },
+    "urlBefore": "http://localhost:3116/login",
+    "urlAfter": "http://localhost:3116/login",
+    "startedAt": "2026-08-05T03:46:09.041Z",
+    "finishedAt": "2026-08-05T03:46:11.660Z",
+    "screenshot": "screenshots/08_wait.png",
+    "domText": "Welcome Back\nSign in to your career governance board\nEmail\nPassword\nSigning in...\n\nDon't have an account? Sign up",
+    "error": null
+  },
+  {
+    "n": 9,
+    "tool": "snapshot",
+    "input": {},
+    "urlBefore": "http://localhost:3116/login",
+    "urlAfter": "http://localhost:3116/dashboard",
+    "startedAt": "2026-08-05T03:46:13.669Z",
+    "finishedAt": "2026-08-05T03:46:14.350Z",
+    "screenshot": "screenshots/09_snapshot.png",
+    "domText": "PCGS\nDashboard\nQuick Audit\nPortfolio\nBoard Meeting\nHistory\nFU\nWelcome back, Fixture User\n\nQ3 2026 - Your personal board awaits\n\nPattern Insight\n\nComplete a few more sessions to start seeing patterns.\n\nQuick Audit\n15-minute accountability check\nStart Audit\nProblem Portfolio\n3 problems defined\nView Portfolio\nBoard Meeting\nQ3 2026 quarterly review\nEnter Board Room",
+    "error": null
+  },
+  {
+    "n": 10,
+    "tool": "goto",
+    "input": {
+      "path": "/audit"
+    },
+    "urlBefore": "http://localhost:3116/dashboard",
+    "urlAfter": "http://localhost:3116/audit",
+    "startedAt": "2026-08-05T03:46:16.543Z",
+    "finishedAt": "2026-08-05T03:46:19.332Z",
+    "screenshot": "screenshots/10_goto.png",
+    "domText": "PCGS\nDashboard\nQuick Audit\nPortfolio\nBoard Meeting\nHistory\nFU\nQuick Audit\n\n15 minutes to surface what you've been avoiding\n\nCareer Audit\n5 questions to assess your current trajectory\n~15 minutes\n\nThis audit will challenge you on:\n\nDecisions you've been avoiding\nConversations you've postponed\nComfort work that filled your time\nReal progress you can point to\nYour bet for next week\nNote: Vague answers won't pass. The AI will push back until you get specific about what's really going on.\nStart Audit",
+    "error": null
+  },
+  {
+    "n": 11,
+    "tool": "snapshot",
+    "input": {},
+    "urlBefore": "http://localhost:3116/audit",
+    "urlAfter": "http://localhost:3116/audit",
+    "startedAt": "2026-08-05T03:46:23.428Z",
+    "finishedAt": "2026-08-05T03:46:23.920Z",
+    "screenshot": "screenshots/11_snapshot.png",
+    "domText": "PCGS\nDashboard\nQuick Audit\nPortfolio\nBoard Meeting\nHistory\nFU\nQuick Audit\n\n15 minutes to surface what you've been avoiding\n\nCareer Audit\n5 questions to assess your current trajectory\n~15 minutes\n\nThis audit will challenge you on:\n\nDecisions you've been avoiding\nConversations you've postponed\nComfort work that filled your time\nReal progress you can point to\nYour bet for next week\nNote: Vague answers won't pass. The AI will push back until you get specific about what's really going on.\nStart Audit",
+    "error": null
+  },
+  {
+    "n": 12,
+    "tool": "click",
+    "input": {
+      "selector": "role=button[name=\"Start Audit\"]"
+    },
+    "urlBefore": "http://localhost:3116/audit",
+    "urlAfter": "http://localhost:3116/audit",
+    "startedAt": "2026-08-05T03:46:26.539Z",
+    "finishedAt": "2026-08-05T03:46:27.159Z",
+    "screenshot": "screenshots/12_click.png",
+    "domText": "PCGS\nDashboard\nQuick Audit\nPortfolio\nBoard Meeting\nHistory\nFU\nQuick Audit\n\n15 minutes to surface what you've been avoiding\n\nCareer Audit\n5 questions to assess your current trajectory\n~15 minutes\n\nThis audit will challenge you on:\n\nDecisions you've been avoiding\nConversations you've postponed\nComfort work that filled your time\nReal progress you can point to\nYour bet for next week\nNote: Vague answers won't pass. The AI will push back until you get specific about what's really going on.\nStarting...",
+    "error": null
+  },
+  {
+    "n": 13,
+    "tool": "wait",
+    "input": {
+      "ms": 2000
+    },
+    "urlBefore": "http://localhost:3116/audit",
+    "urlAfter": "http://localhost:3116/audit",
+    "startedAt": "2026-08-05T03:46:29.811Z",
+    "finishedAt": "2026-08-05T03:46:32.331Z",
+    "screenshot": "screenshots/13_wait.png",
+    "domText": "PCGS\nDashboard\nQuick Audit\nPortfolio\nBoard Meeting\nHistory\nFU\nQuick Audit\n\n15 minutes to surface what you've been avoiding\n\nCareer Audit\n5 questions to assess your current trajectory\n~15 minutes\n\nThis audit will challenge you on:\n\nDecisions you've been avoiding\nConversations you've postponed\nComfort work that filled your time\nReal progress you can point to\nYour bet for next week\nNote: Vague answers won't pass. The AI will push back until you get specific about what's really going on.\nStarting...",
+    "error": null
+  },
+  {
+    "n": 14,
+    "tool": "snapshot",
+    "input": {},
+    "urlBefore": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "urlAfter": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "startedAt": "2026-08-05T03:46:34.499Z",
+    "finishedAt": "2026-08-05T03:46:35.006Z",
+    "screenshot": "screenshots/14_snapshot.png",
+    "domText": "PCGS\nDashboard\nQuick Audit\nPortfolio\nBoard Meeting\nHistory\nFU",
+    "error": null
+  },
+  {
+    "n": 15,
+    "tool": "wait",
+    "input": {
+      "ms": 3000
+    },
+    "urlBefore": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "urlAfter": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "startedAt": "2026-08-05T03:46:38.790Z",
+    "finishedAt": "2026-08-05T03:46:42.277Z",
+    "screenshot": "screenshots/15_wait.png",
+    "domText": "PCGS\nDashboard\nQuick Audit\nPortfolio\nBoard Meeting\nHistory\nFU\nQuestion 1 of 5\n0% complete\nWhat decision have you been avoiding?\n\nThink about conversations you've postponed, choices you've deferred, or actions you've rationalized delaying.\n\nAttempt 1 of 3\n\nSubmit",
+    "error": null
+  },
+  {
+    "n": 16,
+    "tool": "snapshot",
+    "input": {},
+    "urlBefore": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "urlAfter": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "startedAt": "2026-08-05T03:46:45.120Z",
+    "finishedAt": "2026-08-05T03:46:45.612Z",
+    "screenshot": "screenshots/16_snapshot.png",
+    "domText": "PCGS\nDashboard\nQuick Audit\nPortfolio\nBoard Meeting\nHistory\nFU\nQuestion 1 of 5\n0% complete\nWhat decision have you been avoiding?\n\nThink about conversations you've postponed, choices you've deferred, or actions you've rationalized delaying.\n\nAttempt 1 of 3\n\nSubmit",
+    "error": null
+  },
+  {
+    "n": 17,
+    "tool": "fill",
+    "input": {
+      "selector": "textarea",
+      "text": "I have been avoiding making some changes around here"
+    },
+    "urlBefore": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "urlAfter": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "startedAt": "2026-08-05T03:46:48.497Z",
+    "finishedAt": "2026-08-05T03:46:48.997Z",
+    "screenshot": "screenshots/17_fill.png",
+    "domText": "PCGS\nDashboard\nQuick Audit\nPortfolio\nBoard Meeting\nHistory\nFU\nQuestion 1 of 5\n0% complete\nWhat decision have you been avoiding?\n\nThink about conversations you've postponed, choices you've deferred, or actions you've rationalized delaying.\n\nAttempt 1 of 3\n\nSubmit",
+    "error": null
+  },
+  {
+    "n": 18,
+    "tool": "snapshot",
+    "input": {},
+    "urlBefore": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "urlAfter": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "startedAt": "2026-08-05T03:46:50.564Z",
+    "finishedAt": "2026-08-05T03:46:51.050Z",
+    "screenshot": "screenshots/18_snapshot.png",
+    "domText": "PCGS\nDashboard\nQuick Audit\nPortfolio\nBoard Meeting\nHistory\nFU\nQuestion 1 of 5\n0% complete\nWhat decision have you been avoiding?\n\nThink about conversations you've postponed, choices you've deferred, or actions you've rationalized delaying.\n\nAttempt 1 of 3\n\nSubmit",
+    "error": null
+  },
+  {
+    "n": 19,
+    "tool": "click",
+    "input": {
+      "selector": "role=button[name=\"Submit\"]"
+    },
+    "urlBefore": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "urlAfter": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "startedAt": "2026-08-05T03:46:52.939Z",
+    "finishedAt": "2026-08-05T03:46:53.496Z",
+    "screenshot": "screenshots/19_click.png",
+    "domText": "PCGS\nDashboard\nQuick Audit\nPortfolio\nBoard Meeting\nHistory\nFU\nQuestion 1 of 5\n0% complete\nWhat decision have you been avoiding?\n\nThink about conversations you've postponed, choices you've deferred, or actions you've rationalized delaying.\n\nAttempt 1 of 3\n\nEvaluating...",
+    "error": null
+  },
+  {
+    "n": 20,
+    "tool": "wait",
+    "input": {
+      "ms": 3000
+    },
+    "urlBefore": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "urlAfter": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "startedAt": "2026-08-05T03:46:55.306Z",
+    "finishedAt": "2026-08-05T03:46:58.795Z",
+    "screenshot": "screenshots/20_wait.png",
+    "domText": "PCGS\nDashboard\nQuick Audit\nPortfolio\nBoard Meeting\nHistory\nFU\nQuestion 2 of 5\n20% complete\nWhat conversation have you been avoiding?\n\nConsider feedback you haven't given, requests you haven't made, or boundaries you haven't set.\n\nAttempt 1 of 3\n\nSubmit",
+    "error": null
+  },
+  {
+    "n": 21,
+    "tool": "snapshot",
+    "input": {},
+    "urlBefore": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "urlAfter": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "startedAt": "2026-08-05T03:47:00.430Z",
+    "finishedAt": "2026-08-05T03:47:00.914Z",
+    "screenshot": "screenshots/21_snapshot.png",
+    "domText": "PCGS\nDashboard\nQuick Audit\nPortfolio\nBoard Meeting\nHistory\nFU\nQuestion 2 of 5\n20% complete\nWhat conversation have you been avoiding?\n\nConsider feedback you haven't given, requests you haven't made, or boundaries you haven't set.\n\nAttempt 1 of 3\n\nSubmit",
+    "error": null
+  },
+  {
+    "n": 22,
+    "tool": "wait",
+    "input": {
+      "ms": 3000
+    },
+    "urlBefore": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "urlAfter": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "startedAt": "2026-08-05T03:47:04.554Z",
+    "finishedAt": "2026-08-05T03:47:08.040Z",
+    "screenshot": "screenshots/22_wait.png",
+    "domText": "PCGS\nDashboard\nQuick Audit\nPortfolio\nBoard Meeting\nHistory\nFU\nQuestion 2 of 5\n20% complete\nWhat conversation have you been avoiding?\n\nConsider feedback you haven't given, requests you haven't made, or boundaries you haven't set.\n\nAttempt 1 of 3\n\nSubmit",
+    "error": null
+  },
+  {
+    "n": 23,
+    "tool": "snapshot",
+    "input": {},
+    "urlBefore": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "urlAfter": "http://localhost:3116/audit/cmsfjp0hx000112k4mgirbvk9",
+    "startedAt": "2026-08-05T03:47:09.733Z",
+    "finishedAt": "2026-08-05T03:47:10.232Z",
+    "screenshot": "screenshots/23_snapshot.png",
+    "domText": "PCGS\nDashboard\nQuick Audit\nPortfolio\nBoard Meeting\nHistory\nFU\nQuestion 2 of 5\n20% complete\nWhat conversation have you been avoiding?\n\nConsider feedback you haven't given, requests you haven't made, or boundaries you haven't set.\n\nAttempt 1 of 3\n\nSubmit",
+    "error": null
+  }
+]

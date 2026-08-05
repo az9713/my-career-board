@@ -45,3 +45,13 @@ next-env.d.ts
 
 # Exclude txt files from docs
 docs/*.txt
+
+# verification environment scratch (databases, videos, ports)
+/.runs/
+/verification/template.db
+
+# evidence bundles: track the readable half (report, verdict, steps, logs, db
+# diff ~45KB/run), not the media (~16MB/run). Regenerate by re-running the flow.
+/verification/runs/**/screenshots/
+/verification/runs/**/*.webm
+/verification/runs/**/*.har
