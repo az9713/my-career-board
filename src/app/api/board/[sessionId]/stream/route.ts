@@ -5,6 +5,7 @@ import {
   createStreamingResponse,
   createSSEStream,
   formatSSEEvent,
+  type StreamChunk,
 } from '@/lib/streaming/service'
 
 export const dynamic = 'force-dynamic'
@@ -118,6 +119,9 @@ Respond naturally but stay in character. Keep it concise.`
       messages,
     })
 
+    // Hoisted function declarations don't inherit the null-narrowing above.
+    const currentPhase = boardSession.currentPhase
+
     // Wrap the generator to capture the full response and store it
     async function* wrappedGenerator() {
       // First send the director info
@@ -150,7 +154,7 @@ Respond naturally but stay in character. Keep it concise.`
               metadata: JSON.stringify({
                 directorName: director.name,
                 directorTitle: director.title,
-                phase: boardSession.currentPhase,
+                phase: currentPhase,
               }),
             },
           })
@@ -158,12 +162,11 @@ Respond naturally but stay in character. Keep it concise.`
       }
     }
 
-    const sseStream = createSSEStream(wrappedGenerator() as AsyncGenerator<{
-      type: string;
-      text?: string;
-      fullText?: string;
-      error?: string;
-    }>)
+    // wrappedGenerator also yields a leading 'director' frame, which is not a
+    // StreamChunk; createSSEStream serialises whatever it is handed.
+    const sseStream = createSSEStream(
+      wrappedGenerator() as unknown as AsyncGenerator<StreamChunk>
+    )
 
     return new Response(sseStream, {
       headers: {
