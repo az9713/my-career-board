@@ -2,6 +2,18 @@
 
 This file provides context for Claude Code and other AI assistants working on the my-career-board (Personal Career Governance System) codebase.
 
+> **Note:** this file documents the app. The *objective* of this repo is the
+> verification environment — see `README.md`, `HANDOFF.md` and
+> `verification/STATUS.md`. Parts of this file are stale (it describes the
+> 40-model version; `prisma/schema.prisma` now has 52).
+
+## Standing rules
+
+**Commit and push after each finished piece of work — don't ask.** A "piece"
+is one coherent change: a fix, a doc rewrite, a harness component. Message
+explains *why*, not just what. Never `--no-verify`. Branch first if a change
+is risky or exploratory; otherwise `main` is fine.
+
 ## Project Overview
 
 my-career-board is a Next.js web application that provides AI-powered career accountability through a "personal board of directors" concept. Users define career problems they're solving, and AI directors (powered by Anthropic's Claude) conduct quarterly reviews and audits to keep users accountable.
