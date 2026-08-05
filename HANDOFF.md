@@ -4,11 +4,19 @@
 This file is the live "what to do next"; `CLAUDE.md` is the standing playbook.
 Don't duplicate what's already in the files referenced below — open them.
 
-## Current state (2026-08-04)
+## Current state (2026-08-04, pushed at `f12faf1`)
 
-The checkout is now level with `origin/main` (`28b7abc`) — the previous
-31-commit gap is closed. **Phase 0 and Phase 1 of the verification environment
-are built.** One command boots an isolated instance of this app, seeds a known
+The 31-commit gap to `origin/main` is closed, and two commits sit on top:
+
+| Commit | What landed |
+|--------|-------------|
+| `f863b22` | Two type-error fixes in `src/app/api/board/[sessionId]/stream/route.ts` — revert this one alone if you'd rather own those yourself |
+| `f12faf1` | The verification environment (this document, `harness/`, `verification/`) |
+
+Working tree clean; local and `origin/main` both at `f12faf1`.
+
+**Phase 0 and Phase 1 of the verification environment are built.** One command
+boots an isolated instance of this app, seeds a known
 database, drives a browser agent through plain-English steps, records the
 evidence, and gets a verdict from a separate judge model:
 
